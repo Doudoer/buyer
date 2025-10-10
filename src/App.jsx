@@ -21,20 +21,36 @@ function App() {
     <Router>
       <CssBaseline />
       <NavBar />
-      <Banner />
-      <Container maxWidth="md" sx={{ py: 4, flex: 1 }}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/cotizar" element={<QuoteForm />} />
-          <Route path="/contacto" element={<Contact />} />
-          <Route path="/faq" element={<Faq />} />
-          <Route path="/privacidad" element={<Privacidad />} />
-          <Route path="/aviso-legal" element={<AvisoLegal />} />
-          <Route path="/testimonios" element={<Testimonios />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Container>
+      <Routes>
+        <Route
+          path="/cotizar"
+          element={
+            <Container maxWidth="md" sx={{ py: 4, flex: 1 }}>
+              <QuoteForm />
+            </Container>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <>
+              <Banner />
+              <Container maxWidth="md" sx={{ py: 4, flex: 1 }}>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/contacto" element={<Contact />} />
+                  <Route path="/faq" element={<Faq />} />
+                  <Route path="/privacidad" element={<Privacidad />} />
+                  <Route path="/aviso-legal" element={<AvisoLegal />} />
+                  <Route path="/testimonios" element={<Testimonios />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Container>
+            </>
+          }
+        />
+      </Routes>
       <Footer />
     </Router>
   );

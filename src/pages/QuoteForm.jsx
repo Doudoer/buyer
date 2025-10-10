@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Typography, Stack, Alert } from '@mui/material';
+import { Typography, Stack, Alert, Box } from '@mui/material';
 import QuoteStepperFull from '../components/QuoteStepperFull';
 
 export default function QuoteForm() {
@@ -22,12 +22,15 @@ export default function QuoteForm() {
     }
   };
 
+  // Elimina cualquier banner, hero o fondo especial aquí. Solo el formulario:
   return (
-    <Stack spacing={3}>
-      <Typography variant="h4" component="h2">Cotiza tu auto</Typography>
-      {error && <Alert severity="error">{error}</Alert>}
-      {result && <Alert severity="success">{result.mensaje}</Alert>}
-  {!result && <QuoteStepperFull onSubmit={handleQuote} />}
+    <Stack spacing={3} sx={{ minHeight: '70vh', justifyContent: 'center', alignItems: 'center', py: 6 }}>
+      <Box sx={{ width: '100%', maxWidth: 600 }}>
+        <Typography variant="h4" component="h2" sx={{ mb: 2, textAlign: 'center' }}>Cotiza tu auto</Typography>
+        {error && <Alert severity="error">{error}</Alert>}
+        {result && <Alert severity="success">{result.mensaje}</Alert>}
+        {!result && <QuoteStepperFull onSubmit={handleQuote} />}
+      </Box>
     </Stack>
   );
 }
