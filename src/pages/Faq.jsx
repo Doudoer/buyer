@@ -1,35 +1,37 @@
 import React from 'react';
 import { Typography, Accordion, AccordionSummary, AccordionDetails, Stack } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useTranslation } from 'react-i18next';
 
-export default function Faq() {
-  return (
-    <Stack spacing={3}>
-      <Typography variant="h4" component="h2">Preguntas Frecuentes</Typography>
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          ¿Cómo funciona el proceso de venta?
-        </AccordionSummary>
-        <AccordionDetails>
-          Nos envías los datos de tu auto, te damos una cotización y si aceptas, coordinamos la entrega y pago.
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          ¿Cuánto tiempo tarda la venta?
-        </AccordionSummary>
-        <AccordionDetails>
-          El proceso puede completarse en el mismo día si tienes toda la documentación lista.
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          ¿Qué documentos necesito?
-        </AccordionSummary>
-        <AccordionDetails>
-          Título de propiedad, identificación oficial y comprobante de domicilio.
-        </AccordionDetails>
-      </Accordion>
-    </Stack>
-  );
-}
+  export default function Faq() {
+    const { t } = useTranslation();
+    return (
+      <Stack spacing={3}>
+        <Typography variant="h4" component="h2">{t('faq.title')}</Typography>
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            {t('faq.q1')}
+          </AccordionSummary>
+          <AccordionDetails>
+            {t('faq.a1')}
+          </AccordionDetails>
+        </Accordion>
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            {t('faq.q2')}
+          </AccordionSummary>
+          <AccordionDetails>
+            {t('faq.a2')}
+          </AccordionDetails>
+        </Accordion>
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            {t('faq.q3')}
+          </AccordionSummary>
+          <AccordionDetails>
+            {t('faq.a3')}
+          </AccordionDetails>
+        </Accordion>
+      </Stack>
+    );
+  }

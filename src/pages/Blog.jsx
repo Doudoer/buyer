@@ -1,5 +1,6 @@
 import React from 'react';
 import { Typography, Stack, Card, CardContent, CardActionArea, Grid } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 const posts = [
   {
@@ -26,9 +27,10 @@ const posts = [
 ];
 
 export default function Blog() {
+  const { t } = useTranslation();
   return (
     <Stack spacing={3}>
-      <Typography variant="h4">Blog & Noticias</Typography>
+      <Typography variant="h4">{t('blog.title')}</Typography>
       <Grid container spacing={2}>
         {posts.map((p, i) => (
           <Grid item xs={12} md={4} key={i}>
@@ -36,9 +38,9 @@ export default function Blog() {
               <CardActionArea href={p.url}>
                 <img src={p.imagen} alt={p.titulo} style={{ width: '100%', height: 160, objectFit: 'cover' }} />
                 <CardContent>
-                  <Typography variant="h6">{p.titulo}</Typography>
-                  <Typography variant="body2" gutterBottom>{p.resumen}</Typography>
-                  <Typography variant="body2" color="text.secondary">{p.contenido}</Typography>
+                  <Typography variant="h6">{t(p.titulo)}</Typography>
+                  <Typography variant="body2" gutterBottom>{t(p.resumen)}</Typography>
+                  <Typography variant="body2" color="text.secondary">{t(p.contenido)}</Typography>
                 </CardContent>
               </CardActionArea>
             </Card>

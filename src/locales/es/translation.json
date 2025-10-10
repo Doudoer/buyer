@@ -1,0 +1,174 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "quote": "Cotiza tu auto",
+    "contact": "Contacto",
+    "faq": "Preguntas frecuentes",
+    "testimonials": "Testimonios",
+    "blog": "Blog",
+    "language": "Idioma",
+    "spanish": "Español",
+    "english": "Inglés"
+  },
+  "home": {
+    "title": "Cotiza tu auto",
+    "description": "Obtén una cotización instantánea y vende tu auto hoy mismo. Sin complicaciones, sin regateos."
+  },
+  "quote": {
+    "title": "Cotiza tu auto",
+    "vin": "VIN NUMBER",
+    "manual": "Ingresar manualmente",
+    "year": "Año",
+    "brand": "Marca",
+    "model": "Modelo",
+    "next": "Siguiente",
+    "back": "Atrás",
+    "send": "Enviar",
+    "mileage": "Kilometraje",
+    "state": "Estado general",
+    "details": "Detalles del Auto",
+    "contact": "Datos de Contacto",
+    "good": "bueno",
+    "regular": "regular",
+    "excellent": "excelente",
+    "titleQ": "¿El vehículo tiene título?",
+    "yes": "Sí",
+    "no": "No",
+    "select": "Selecciona una opción",
+    "optional": "opcional",
+    "chars": "caracteres",
+    "identified": "Auto identificado",
+    "notIdentified": "No se pudo identificar el auto",
+    "searchingVin": "Buscando información del VIN...",
+    "steps": {
+      "yearVin": "Año/VIN",
+      "brand": "Marca",
+      "model": "Modelo",
+      "details": "Detalles",
+      "contact": "Contacto"
+    },
+    "enterVinTitle": "Ingresa el VIN de tu auto",
+    "vinLabel": "VIN (17 caracteres)",
+    "vinHelper": "El VIN debe tener 17 caracteres",
+    "noVin": "No dispongo del VIN en este momento",
+    "manualSelect": "O selecciona manualmente:",
+    "searchYear": "Buscar año...",
+    "notAvailable": "No disponible",
+    "selectBrand": "Seleccione la Marca",
+    "selectModel": "Seleccione el Modelo",
+    "phone": "Teléfono",
+    "help": {
+      "year": {"title": "Año", "desc": "Seleccione el año de su vehículo o proporcione su VIN."},
+      "brand": {"title": "Marca", "desc": "Seleccione la marca de su auto."},
+      "model": {"title": "Modelo", "desc": "Seleccione el modelo de su auto."},
+      "details": {"title": "Detalles", "desc": "Agregue detalles como kilometraje, estado, etc."},
+      "contact": {"title": "Contacto", "desc": "Ingrese sus datos para recibir la oferta."}
+    }
+  },
+  "contact": {
+    "title": "Contacto",
+    "name": "Nombre",
+    "email": "Email",
+    "message": "Mensaje",
+    "send": "Enviar",
+    "sent": "¡Mensaje enviado! Te responderemos pronto."
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados.",
+    "privacy": "Política de Privacidad",
+    "legal": "Aviso Legal"
+  },
+  "banner": {
+    "title": "¡Vende tu auto hoy mismo!"
+  },
+  "faq": {
+    "title": "Preguntas Frecuentes",
+    "q1": "¿Cómo funciona el proceso de venta?",
+    "a1": "Nos envías los datos de tu auto, te damos una cotización y si aceptas, coordinamos la entrega y pago.",
+    "q2": "¿Cuánto tiempo tarda la venta?",
+    "a2": "El proceso puede completarse en el mismo día si tienes toda la documentación lista.",
+    "q3": "¿Qué documentos necesito?",
+    "a3": "Título de propiedad, identificación oficial y comprobante de domicilio."
+  },
+  "testimonials": {
+    "title": "Testimonios de Clientes",
+    "1": {
+      "name": "Juan Pérez",
+      "text": "Vendí mi auto en un día, ¡excelente servicio! El proceso fue muy sencillo y el pago inmediato."
+    },
+    "2": {
+      "name": "Ana Gómez",
+      "text": "Muy fácil y rápido, lo recomiendo. Me ayudaron con todo el papeleo y fueron muy amables."
+    },
+    "3": {
+      "name": "Carlos Ruiz",
+      "text": "Me pagaron al instante y sin complicaciones. Sin duda volvería a venderles otro auto."
+    }
+  },
+  "blog": {
+    "title": "Blog & Noticias",
+    "1": {
+      "title": "¿Cómo vender tu auto rápido?",
+      "summary": "Consejos para vender tu auto de forma segura y rápida.",
+      "content": "Vender tu auto rápido es posible si sigues estos consejos: prepara la documentación, mantén tu auto limpio, toma buenas fotos y cotiza con nosotros para una oferta inmediata."
+    },
+    "2": {
+      "title": "Documentos necesarios para la venta",
+      "summary": "Lista de documentos que necesitas para vender tu auto.",
+      "content": "Para vender tu auto necesitas: título de propiedad, identificación oficial, comprobante de domicilio y, si aplica, factura original. ¡Consulta con nosotros si tienes dudas!"
+    },
+    "3": {
+      "title": "Ventajas de vender a Rodriguez te lo compra!",
+      "summary": "Por qué elegirnos para vender tu auto.",
+      "content": "Con Rodriguez te lo compra! obtienes pago inmediato, proceso seguro y sin regateos. Nos encargamos de todo el papeleo y recogemos tu auto donde estés."
+    }
+  },
+  "notFound": {
+    "404": "404 - Página no encontrada",
+    "backHome": "Volver al inicio"
+  }
+
+  ,
+  "whyChooseUs": {
+    "title": "¿POR QUÉ ELEGIRNOS?",
+    "subtitle": "Tu mejor opción para vender tu auto, fácil y seguro.",
+    "benefit1": {
+      "title": "¡Cualquier Auto, Cualquier Condición!",
+      "desc": "Tu coche viejo, dañado, funcionando o no: lo compramos. Sin importar su estado."
+    },
+    "benefit2": {
+      "title": "Pago Seguro al Instante",
+      "desc": "Recibe tu dinero de forma segura y al instante, justo al momento de la recogida."
+    },
+    "benefit3": {
+      "title": "Recogida GRATIS",
+      "desc": "Nosotros nos encargamos del remolque sin costo adicional. Programamos la recogida donde y cuando te convenga."
+    },
+    "benefit4": {
+      "title": "Miles de Clientes Satisfechos",
+      "desc": "Únete a nuestra comunidad. Descubre por qué tantos nos eligen para una venta sin estrés."
+    }
+  },
+  "process": {
+    "title": "¡Vende Tu Auto en 3 Simples Pasos!",
+    "subtitle": "Rápido, Fácil y 100% Sin Complicaciones.",
+    "step1": {
+      "title": "¡Oferta Instantánea!",
+      "desc": "Completa nuestro formulario en 90 segundos y recibe una oferta garantizada."
+    },
+    "step2": {
+      "title": "Recogida GRATIS",
+      "desc": "Acepta la oferta y agenda el retiro de tu auto donde estés."
+    },
+    "step3": {
+      "title": "Cobra en Mano",
+      "desc": "Recibe tu pago total al instante, justo al recoger tu vehículo."
+    }
+  },
+  "hero": {
+    "title": "Vende tu auto fácil, rápido y seguro.",
+    "subtitle": "Cotiza y vende tu auto en minutos, sin trámites innecesarios.",
+    "cta": "Cotizar mi auto",
+    "howItWorks": "Cómo funciona"
+  }
+}

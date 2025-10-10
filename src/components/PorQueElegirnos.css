@@ -1,0 +1,87 @@
+/* --- Estilos Generales del Contenedor --- */
+.elegirnos-container {
+    background-color: #e6f0fa;
+    padding: 60px 20px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.elegirnos-header {
+    margin-bottom: 40px;
+}
+
+.elegirnos-header h2 {
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.elegirnos-header p {
+    font-size: 1.1em;
+    color: #666;
+}
+
+/* --- Contenedor de los Beneficios (Columnas) --- */
+.elegirnos-beneficios {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+}
+
+/* --- Estilos para cada Tarjeta de Beneficio --- */
+.beneficio-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 30px;
+    max-width: 280px;
+    flex: 1 1 auto;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.beneficio-card:hover {
+    transform: translateY(-5px);
+}
+
+/* --- Estilos para el Icono dentro de la Tarjeta --- */
+.beneficio-card .icon-wrapper {
+    background-color: #d1e5f8;
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px auto;
+}
+
+.beneficio-icon {
+    color: #3d85c6;
+}
+
+/* --- Estilos para el Texto de la Tarjeta --- */
+.beneficio-card h3 {
+    font-size: 1.25em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.beneficio-card p {
+    font-size: 0.95em;
+    color: #666;
+    line-height: 1.4;
+}
+
+/* --- Diseño Responsivo (para móviles) --- */
+@media (max-width: 768px) {
+    .elegirnos-beneficios {
+        flex-direction: column;
+        align-items: center;
+    }
+    .beneficio-card {
+        max-width: 90%;
+    }
+}

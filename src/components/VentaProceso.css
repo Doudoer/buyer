@@ -1,0 +1,108 @@
+/* --- Estilos Generales del Contenedor --- */
+.venta-proceso-container {
+    background-color: #e6f0fa;
+    padding: 60px 20px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.proceso-header {
+    margin-bottom: 40px;
+}
+
+.proceso-header h2 {
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.proceso-header p {
+    font-size: 1.1em;
+    color: #666;
+}
+
+/* --- Estilos para los Pasos y Tarjetas --- */
+.proceso-steps {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.proceso-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 30px;
+    max-width: 300px;
+    text-align: left;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.proceso-card:hover {
+    transform: translateY(-5px);
+}
+
+/* --- Estilos para el Ícono --- */
+.icon-wrapper {
+    background-color: #d1e5f8;
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.proceso-icon {
+    color: #3d85c6;
+}
+
+/* --- Estilos para el Contenido de Texto --- */
+.text-content h3 {
+    font-size: 2em;
+    color: #3d85c6;
+    margin: 0;
+    line-height: 1;
+    text-align: center;
+}
+
+.text-content h4 {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #333;
+    margin: 5px 0 10px 0;
+    text-align: center;
+}
+
+.text-content p {
+    font-size: 0.95em;
+    color: #666;
+    line-height: 1.4;
+    text-align: center;
+}
+
+/* --- Estilos de la Flecha Separadora --- */
+.arrow-separator {
+    font-size: 4em;
+    color: #3d85c6;
+    margin: 0 10px;
+    line-height: 1;
+    font-weight: 100;
+}
+
+/* --- Diseño Responsivo (para móviles) --- */
+@media (max-width: 768px) {
+    .proceso-steps {
+        flex-direction: column;
+        gap: 30px;
+    }
+    .arrow-separator {
+        display: none;
+    }
+}

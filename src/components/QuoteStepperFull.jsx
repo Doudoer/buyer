@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { decodeVin } from '../utils/vinDecoder';
 import {
   Box, Card, CardContent, Typography, Button, TextField, List, ListItem, ListItemButton, ListItemText, Tabs, Tab, Stack, Stepper, Step, StepLabel, MenuItem
@@ -20,31 +21,32 @@ const MODELOS = {
 };
 
 function HelpPanel({ step }) {
+  const { t } = useTranslation();
   const help = [
     {
-      title: 'Año',
+      title: t('quote.help.year.title'),
       img: 'https://cdn-icons-png.flaticon.com/512/2921/2921222.png',
-      desc: 'Seleccione el año de su vehículo o proporcione su VIN.'
+      desc: t('quote.help.year.desc')
     },
     {
-      title: 'Marca',
+      title: t('quote.help.brand.title'),
       img: 'https://cdn-icons-png.flaticon.com/512/616/616554.png',
-      desc: 'Seleccione la marca de su auto.'
+      desc: t('quote.help.brand.desc')
     },
     {
-      title: 'Modelo',
+      title: t('quote.help.model.title'),
       img: 'https://cdn-icons-png.flaticon.com/512/616/616490.png',
-      desc: 'Seleccione el modelo de su auto.'
+      desc: t('quote.help.model.desc')
     },
     {
-      title: 'Detalles',
+      title: t('quote.help.details.title'),
       img: 'https://cdn-icons-png.flaticon.com/512/1256/1256650.png',
-      desc: 'Agregue detalles como kilometraje, estado, etc.'
+      desc: t('quote.help.details.desc')
     },
     {
-      title: 'Contacto',
+      title: t('quote.help.contact.title'),
       img: 'https://cdn-icons-png.flaticon.com/512/747/747376.png',
-      desc: 'Ingrese sus datos para recibir la oferta.'
+      desc: t('quote.help.contact.desc')
     },
   ];
   return (
@@ -58,9 +60,16 @@ function HelpPanel({ step }) {
   );
 }
 
-const steps = ['Año/VIN', 'Marca', 'Modelo', 'Detalles', 'Contacto'];
+const stepsKeys = [
+  'quote.steps.yearVin',
+  'quote.steps.brand',
+  'quote.steps.model',
+  'quote.steps.details',
+  'quote.steps.contact',
+];
 
 export default function QuoteStepperFull({ onSubmit }) {
+  const { t } = useTranslation();
   const [activeStep, setActiveStep] = useState(0);
   const [search, setSearch] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
@@ -134,27 +143,27 @@ export default function QuoteStepperFull({ onSubmit }) {
     <Stack direction={{ xs: 'column', md: 'row' }} spacing={3}>
       <Box flex={2}>
         <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: 2 }}>
-          {steps.map(label => (
-            <Step key={label}><StepLabel>{label}</StepLabel></Step>
+          {stepsKeys.map(key => (
+            <Step key={key}><StepLabel>{t(key)}</StepLabel></Step>
           ))}
         </Stepper>
         <Card>
           <CardContent>
             {activeStep === 0 && (
               <>
-                <Typography variant="h6" sx={{ mb: 2 }}>Ingresa el VIN de tu auto</Typography>
+                <Typography variant="h6" sx={{ mb: 2 }}>{t('quote.enterVinTitle')}</Typography>
                 {!detalles.noVin && (
                   <TextField
                     fullWidth
                     size="small"
-                    label="VIN (17 caracteres)"
+                    label={t('quote.vinLabel')}
                     value={vin}
                     onChange={e => setVin(e.target.value)}
                     sx={{ mb: 2 }}
                     inputProps={{ maxLength: 17 }}
                     required
                     error={vin.length > 0 && vin.length !== 17}
-                    helperText={vin.length > 0 && vin.length !== 17 ? 'El VIN debe tener 17 caracteres' : ''}
+                    helperText={vin.length > 0 && vin.length !== 17 ? t('quote.vinHelper') : ''}
                   />
                 )}
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -171,29 +180,29 @@ export default function QuoteStepperFull({ onSubmit }) {
                     style={{ marginRight: 8 }}
                   />
                   <label htmlFor="no-vin" style={{ cursor: 'pointer' }}>
-                    No dispongo del VIN en este momento
+                    {t('quote.noVin')}
                   </label>
                 </Box>
                 {vinError && <Typography color="error" sx={{ mt: 1 }}>{vinError}</Typography>}
-                {loadingVin && <Typography color="primary" sx={{ mt: 1 }}>Buscando información del VIN...</Typography>}
+                {loadingVin && <Typography color="primary" sx={{ mt: 1 }}>{t('quote.searchingVin')}</Typography>}
                 {vinInfo && (
                   <Box sx={{ mt: 2, p: 2, bgcolor: '#e3f6f5', borderRadius: 1 }}>
-                    <Typography variant="subtitle2">Auto identificado:</Typography>
-                    <Typography variant="body2">Marca: <b>{vinInfo.marca}</b></Typography>
-                    <Typography variant="body2">Modelo: <b>{vinInfo.modelo}</b></Typography>
-                    <Typography variant="body2">Año: <b>{vinInfo.ano}</b></Typography>
-                    <Typography variant="body2">Motor: <b>{vinInfo.motor_litraje ? vinInfo.motor_litraje + 'L' : 'No disponible'}{vinInfo.motor_cilindros ? `, ${vinInfo.motor_cilindros} cilindros` : ''}</b></Typography>
-                    <Typography variant="body2">Transmisión: <b>{vinInfo.transmision_tipo || 'No disponible'}</b>{vinInfo.transmision_velocidades ? `, ${vinInfo.transmision_velocidades} velocidades` : ''}</Typography>
-                    <Typography variant="body2">Tracción: <b>{vinInfo.traccion || 'No disponible'}</b></Typography>
+                    <Typography variant="subtitle2">{t('quote.identified')}</Typography>
+                    <Typography variant="body2">{t('quote.brand')}: <b>{vinInfo.marca}</b></Typography>
+                    <Typography variant="body2">{t('quote.model')}: <b>{vinInfo.modelo}</b></Typography>
+                    <Typography variant="body2">{t('quote.year')}: <b>{vinInfo.ano}</b></Typography>
+                    <Typography variant="body2">Motor: <b>{vinInfo.motor_litraje ? vinInfo.motor_litraje + 'L' : t('quote.notAvailable')}{vinInfo.motor_cilindros ? `, ${vinInfo.motor_cilindros} cilindros` : ''}</b></Typography>
+                    <Typography variant="body2">Transmisión: <b>{vinInfo.transmision_tipo || t('quote.notAvailable')}</b>{vinInfo.transmision_velocidades ? `, ${vinInfo.transmision_velocidades} velocidades` : ''}</Typography>
+                    <Typography variant="body2">Tracción: <b>{vinInfo.traccion || t('quote.notAvailable')}</b></Typography>
                   </Box>
                 )}
                 {detalles.noVin && (
                   <>
-                    <Typography variant="subtitle2" sx={{ mt: 2, mb: 1 }}>O selecciona manualmente:</Typography>
+                    <Typography variant="subtitle2" sx={{ mt: 2, mb: 1 }}>{t('quote.manualSelect')}</Typography>
                     <TextField
                       fullWidth
                       size="small"
-                      placeholder="Buscar año..."
+                      placeholder={t('quote.searchYear')}
                       value={search}
                       onChange={e => setSearch(e.target.value)}
                       sx={{ mb: 2 }}
@@ -226,18 +235,18 @@ export default function QuoteStepperFull({ onSubmit }) {
                       }
                     }}
                   >
-                    Siguiente
+                    {t('quote.next')}
                   </Button>
                 </Box>
               </>
             )}
             {activeStep === 1 && (
               <>
-                <Typography variant="h6" sx={{ mb: 2 }}>Seleccione la Marca</Typography>
+                <Typography variant="h6" sx={{ mb: 2 }}>{t('quote.selectBrand')}</Typography>
                 <TextField
                   select
                   fullWidth
-                  label="Marca"
+                  label={t('quote.brand')}
                   value={marca}
                   onChange={e => setMarca(e.target.value)}
                   disabled={!!vinInfo && !!vinInfo.marca}
@@ -247,18 +256,18 @@ export default function QuoteStepperFull({ onSubmit }) {
                   ) : MARCAS.map(m => <MenuItem key={m} value={m}>{m}</MenuItem>)}
                 </TextField>
                 <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
-                  <Button onClick={handleBack}>Atrás</Button>
-                  <Button variant="contained" color="success" disabled={!marca} onClick={handleNext}>Siguiente</Button>
+                  <Button onClick={handleBack}>{t('quote.back')}</Button>
+                  <Button variant="contained" color="success" disabled={!marca} onClick={handleNext}>{t('quote.next')}</Button>
                 </Box>
               </>
             )}
             {activeStep === 2 && (
               <>
-                <Typography variant="h6" sx={{ mb: 2 }}>Seleccione el Modelo</Typography>
+                <Typography variant="h6" sx={{ mb: 2 }}>{t('quote.selectModel')}</Typography>
                 <TextField
                   select
                   fullWidth
-                  label="Modelo"
+                  label={t('quote.model')}
                   value={modelo}
                   onChange={e => setModelo(e.target.value)}
                   disabled={!marca || (!!vinInfo && !!vinInfo.modelo)}
@@ -268,17 +277,17 @@ export default function QuoteStepperFull({ onSubmit }) {
                   ) : modelosDisponibles.map(m => <MenuItem key={m} value={m}>{m}</MenuItem>)}
                 </TextField>
                 <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
-                  <Button onClick={handleBack}>Atrás</Button>
-                  <Button variant="contained" color="success" disabled={!modelo} onClick={handleNext}>Siguiente</Button>
+                  <Button onClick={handleBack}>{t('quote.back')}</Button>
+                  <Button variant="contained" color="success" disabled={!modelo} onClick={handleNext}>{t('quote.next')}</Button>
                 </Box>
               </>
             )}
             {activeStep === 3 && (
               <>
-                <Typography variant="h6" sx={{ mb: 2 }}>Detalles del Auto</Typography>
+                <Typography variant="h6" sx={{ mb: 2 }}>{t('quote.details')}</Typography>
                 <TextField
                   fullWidth
-                  label="Kilometraje"
+                  label={t('quote.mileage')}
                   value={detalles.kilometraje}
                   inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', maxLength: 6 }}
                   onChange={e => {
@@ -289,43 +298,43 @@ export default function QuoteStepperFull({ onSubmit }) {
                 />
                 <TextField
                   fullWidth
-                  label="Estado general (ej: bueno, regular, excelente)"
+                  label={t('quote.state') + ' (ej: ' + t('quote.good') + ', ' + t('quote.regular') + ', ' + t('quote.excellent') + ')'}
                   value={detalles.estado}
                   onChange={e => setDetalles(d => ({ ...d, estado: e.target.value }))}
                 />
                 <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
-                  <Button onClick={handleBack}>Atrás</Button>
-                  <Button variant="contained" color="success" disabled={!detalles.kilometraje || !detalles.estado} onClick={handleNext}>Siguiente</Button>
+                  <Button onClick={handleBack}>{t('quote.back')}</Button>
+                  <Button variant="contained" color="success" disabled={!detalles.kilometraje || !detalles.estado} onClick={handleNext}>{t('quote.next')}</Button>
                 </Box>
               </>
             )}
             {activeStep === 4 && (
               <>
-                <Typography variant="h6" sx={{ mb: 2 }}>Datos de Contacto</Typography>
+                <Typography variant="h6" sx={{ mb: 2 }}>{t('quote.contact')}</Typography>
                 <TextField
                   fullWidth
-                  label="Nombre"
+                  label={t('contact.name')}
                   value={contacto.nombre}
                   onChange={e => setContacto(c => ({ ...c, nombre: e.target.value }))}
                   sx={{ mb: 2 }}
                 />
                 <TextField
                   fullWidth
-                  label="Teléfono"
+                  label={t('contact.phone')}
                   value={contacto.telefono}
                   onChange={e => setContacto(c => ({ ...c, telefono: e.target.value }))}
                   sx={{ mb: 2 }}
                 />
                 <TextField
                   fullWidth
-                  label="Email"
+                  label={t('contact.email')}
                   value={contacto.email}
                   onChange={e => setContacto(c => ({ ...c, email: e.target.value }))}
                   sx={{ mb: 2 }}
                 />
                 <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
-                  <Button onClick={handleBack}>Atrás</Button>
-                  <Button variant="contained" color="success" disabled={!contacto.nombre || !contacto.telefono || !contacto.email} onClick={handleSubmit}>Enviar</Button>
+                  <Button onClick={handleBack}>{t('quote.back')}</Button>
+                  <Button variant="contained" color="success" disabled={!contacto.nombre || !contacto.telefono || !contacto.email} onClick={handleSubmit}>{t('quote.send')}</Button>
                 </Box>
               </>
             )}
@@ -365,11 +374,11 @@ export default function QuoteStepperFull({ onSubmit }) {
       <Box flex={1}>
         <Card>
           <Tabs value={activeStep} onChange={(_, v) => setActiveStep(v)}>
-            <Tab label="Año/VIN" />
-            <Tab label="Marca" />
-            <Tab label="Modelo" />
-            <Tab label="Detalles" />
-            <Tab label="Contacto" />
+            <Tab label={t('quote.steps.yearVin')} />
+            <Tab label={t('quote.steps.brand')} />
+            <Tab label={t('quote.steps.model')} />
+            <Tab label={t('quote.steps.details')} />
+            <Tab label={t('quote.steps.contact')} />
           </Tabs>
           <CardContent>
             <HelpPanel step={activeStep} />

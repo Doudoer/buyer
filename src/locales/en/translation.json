@@ -1,0 +1,174 @@
+{
+  "nav": {
+    "home": "Home",
+    "quote": "Quote your car",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "testimonials": "Testimonials",
+    "blog": "Blog",
+    "language": "Language",
+    "spanish": "Spanish",
+    "english": "English"
+  },
+  "home": {
+    "title": "Quote your car",
+    "description": "Get an instant quote and sell your car today. No hassle, no haggling."
+  },
+  "quote": {
+    "title": "Quote your car",
+    "vin": "VIN NUMBER",
+    "manual": "Enter manually",
+    "year": "Year",
+    "brand": "Brand",
+    "model": "Model",
+    "next": "Next",
+    "back": "Back",
+    "send": "Send",
+    "mileage": "Mileage",
+    "state": "General condition",
+    "details": "Car Details",
+    "contact": "Contact Details",
+    "good": "good",
+    "regular": "regular",
+    "excellent": "excellent",
+    "titleQ": "Does the vehicle have a title?",
+    "yes": "Yes",
+    "no": "No",
+    "select": "Select an option",
+    "optional": "optional",
+    "chars": "characters",
+    "identified": "Car identified",
+    "notIdentified": "Could not identify the car",
+    "searchingVin": "Searching VIN information...",
+    "steps": {
+      "yearVin": "Year/VIN",
+      "brand": "Brand",
+      "model": "Model",
+      "details": "Details",
+      "contact": "Contact"
+    },
+    "enterVinTitle": "Enter your car's VIN",
+    "vinLabel": "VIN (17 characters)",
+    "vinHelper": "VIN must be 17 characters",
+    "noVin": "I don't have the VIN right now",
+    "manualSelect": "Or select manually:",
+    "searchYear": "Search year...",
+    "notAvailable": "Not available",
+    "selectBrand": "Select Brand",
+    "selectModel": "Select Model",
+    "phone": "Phone",
+    "help": {
+      "year": {"title": "Year", "desc": "Select your vehicle's year or provide your VIN."},
+      "brand": {"title": "Brand", "desc": "Select your car's brand."},
+      "model": {"title": "Model", "desc": "Select your car's model."},
+      "details": {"title": "Details", "desc": "Add details like mileage, condition, etc."},
+      "contact": {"title": "Contact", "desc": "Enter your details to receive the offer."}
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send",
+    "sent": "Message sent! We will reply soon."
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "privacy": "Privacy Policy",
+    "legal": "Legal Notice"
+  },
+  "banner": {
+    "title": "Sell your car today!"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "q1": "How does the selling process work?",
+    "a1": "You send us your car's details, we give you a quote, and if you accept, we arrange delivery and payment.",
+    "q2": "How long does the sale take?",
+    "a2": "The process can be completed the same day if you have all the documentation ready.",
+    "q3": "What documents do I need?",
+    "a3": "Title of ownership, official ID, and proof of address."
+  },
+  "testimonials": {
+    "title": "Customer Testimonials",
+    "1": {
+      "name": "Juan Perez",
+      "text": "I sold my car in one day, excellent service! The process was very simple and the payment immediate."
+    },
+    "2": {
+      "name": "Ana Gomez",
+      "text": "Very easy and fast, I recommend it. They helped me with all the paperwork and were very kind."
+    },
+    "3": {
+      "name": "Carlos Ruiz",
+      "text": "They paid me instantly and without complications. I would definitely sell them another car."
+    }
+  },
+  "blog": {
+    "title": "Blog & News",
+    "1": {
+      "title": "How to sell your car fast?",
+      "summary": "Tips to sell your car safely and quickly.",
+      "content": "Selling your car fast is possible if you follow these tips: prepare the documentation, keep your car clean, take good photos, and get a quote with us for an immediate offer."
+    },
+    "2": {
+      "title": "Documents needed for the sale",
+      "summary": "List of documents you need to sell your car.",
+      "content": "To sell your car you need: title of ownership, official ID, proof of address, and if applicable, the original invoice. Contact us if you have questions!"
+    },
+    "3": {
+      "title": "Advantages of selling to Rodriguez te lo compra!",
+      "summary": "Why choose us to sell your car.",
+      "content": "With Rodriguez te lo compra! you get immediate payment, a safe process, and no haggling. We handle all the paperwork and pick up your car wherever you are."
+    }
+  },
+  "notFound": {
+    "404": "404 - Page not found",
+    "backHome": "Back to home"
+  }
+
+  ,
+  "whyChooseUs": {
+    "title": "WHY CHOOSE US?",
+    "subtitle": "Your best option to sell your car, easy and safe.",
+    "benefit1": {
+      "title": "Any Car, Any Condition!",
+      "desc": "Old, damaged, running or not: we buy it. No matter its state."
+    },
+    "benefit2": {
+      "title": "Instant Secure Payment",
+      "desc": "Get your money safely and instantly, right at pickup."
+    },
+    "benefit3": {
+      "title": "FREE Pickup",
+      "desc": "We handle the towing at no extra cost. We schedule pickup where and when it suits you."
+    },
+    "benefit4": {
+      "title": "Thousands of Satisfied Customers",
+      "desc": "Join our community. Discover why so many choose us for a stress-free sale."
+    }
+  },
+  "process": {
+    "title": "Sell Your Car in 3 Simple Steps!",
+    "subtitle": "Fast, Easy and 100% Hassle-Free.",
+    "step1": {
+      "title": "Instant Offer!",
+      "desc": "Complete our form in 90 seconds and get a guaranteed offer."
+    },
+    "step2": {
+      "title": "FREE Pickup",
+      "desc": "Accept the offer and schedule your car pickup wherever you are."
+    },
+    "step3": {
+      "title": "Get Paid Instantly",
+      "desc": "Receive your full payment instantly, right when we pick up your vehicle."
+    }
+  },
+  "hero": {
+    "title": "Sell your car easily, quickly and safely.",
+    "subtitle": "Get a quote and sell your car in minutes, no unnecessary paperwork.",
+    "cta": "Quote my car",
+    "howItWorks": "How it works"
+  }
+}

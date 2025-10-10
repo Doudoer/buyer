@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Typography, TextField, Button, Stack, Alert } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 export default function Contact() {
+  const { t } = useTranslation();
   const [form, setForm] = useState({ nombre: '', email: '', mensaje: '' });
   const [enviado, setEnviado] = useState(false);
 
@@ -18,14 +20,14 @@ export default function Contact() {
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h4" component="h2">Contacto</Typography>
-      {enviado && <Alert severity="success">¡Mensaje enviado! Te responderemos pronto.</Alert>}
+      <Typography variant="h4" component="h2">{t('contact.title')}</Typography>
+      {enviado && <Alert severity="success">{t('contact.sent', '¡Mensaje enviado! Te responderemos pronto.')}</Alert>}
       <form onSubmit={handleSubmit}>
         <Stack spacing={2}>
-          <TextField label="Nombre" name="nombre" value={form.nombre} onChange={handleChange} required />
-          <TextField label="Email" name="email" value={form.email} onChange={handleChange} required type="email" />
-          <TextField label="Mensaje" name="mensaje" value={form.mensaje} onChange={handleChange} required multiline rows={4} />
-          <Button type="submit" variant="contained" color="primary">Enviar</Button>
+          <TextField label={t('contact.name')} name="nombre" value={form.nombre} onChange={handleChange} required />
+          <TextField label={t('contact.email')} name="email" value={form.email} onChange={handleChange} required type="email" />
+          <TextField label={t('contact.message')} name="mensaje" value={form.mensaje} onChange={handleChange} required multiline rows={4} />
+          <Button type="submit" variant="contained" color="primary">{t('contact.send')}</Button>
         </Stack>
       </form>
     </Stack>
