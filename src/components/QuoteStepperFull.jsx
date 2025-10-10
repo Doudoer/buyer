@@ -1,390 +1,514 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { decodeVin } from '../utils/vinDecoder';
+import React, { useState, useEffect } from 'react';
 import {
-  Box, Card, CardContent, Typography, Button, TextField, List, ListItem, ListItemButton, ListItemText, Tabs, Tab, Stack, Stepper, Step, StepLabel, MenuItem
+	Box,
+	Button,
+	Card,
+	CardContent,
+	Stepper,
+	Step,
+	StepLabel,
+	TextField,
+	MenuItem,
+	Typography,
+	Stack,
+	CircularProgress,
+	Paper,
+	useTheme
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { getMakesForYear, getModelsForMakeYear } from '../utils/nhtsaApi';
 
-const YEARS = Array.from({ length: 20 }, (_, i) => new Date().getFullYear() + 2 - i);
-const MARCAS = ['Toyota', 'Honda', 'Ford', 'Chevrolet', 'Nissan', 'Volkswagen', 'Hyundai', 'Kia', 'Mazda', 'BMW'];
-const MODELOS = {
-  Toyota: ['Corolla', 'Camry', 'Hilux', 'Yaris'],
-  Honda: ['Civic', 'Accord', 'CR-V'],
-  Ford: ['F-150', 'Focus', 'Explorer'],
-  Chevrolet: ['Aveo', 'Onix', 'Trailblazer'],
-  Nissan: ['Altima', 'Sentra', 'Versa'],
-  Volkswagen: ['Jetta', 'Golf', 'Tiguan'],
-  Hyundai: ['Elantra', 'Tucson', 'Santa Fe'],
-  Kia: ['Rio', 'Sportage', 'Sorento'],
-  Mazda: ['3', 'CX-5', '6'],
-  BMW: ['320i', 'X5', 'X3'],
-};
-
-function HelpPanel({ step }) {
-  const { t } = useTranslation();
-  const help = [
-    {
-      title: t('quote.help.year.title'),
-      img: 'https://cdn-icons-png.flaticon.com/512/2921/2921222.png',
-      desc: t('quote.help.year.desc')
-    },
-    {
-      title: t('quote.help.brand.title'),
-      img: 'https://cdn-icons-png.flaticon.com/512/616/616554.png',
-      desc: t('quote.help.brand.desc')
-    },
-    {
-      title: t('quote.help.model.title'),
-      img: 'https://cdn-icons-png.flaticon.com/512/616/616490.png',
-      desc: t('quote.help.model.desc')
-    },
-    {
-      title: t('quote.help.details.title'),
-      img: 'https://cdn-icons-png.flaticon.com/512/1256/1256650.png',
-      desc: t('quote.help.details.desc')
-    },
-    {
-      title: t('quote.help.contact.title'),
-      img: 'https://cdn-icons-png.flaticon.com/512/747/747376.png',
-      desc: t('quote.help.contact.desc')
-    },
-  ];
-  return (
-    <Box sx={{ bgcolor: '#e3f6f5', p: 3, borderRadius: 2, minHeight: 350 }}>
-      <Stack spacing={2} alignItems="center">
-        <img src={help[step].img} alt={help[step].title} width={100} />
-        <Typography variant="h6">{help[step].title}</Typography>
-        <Typography variant="body2" align="center">{help[step].desc}</Typography>
-      </Stack>
-    </Box>
-  );
-}
-
-const stepsKeys = [
-  'quote.steps.yearVin',
-  'quote.steps.brand',
-  'quote.steps.model',
-  'quote.steps.details',
-  'quote.steps.contact',
+const stepHelp = [
+	{
+		icon: 'https://cdn-icons-png.flaticon.com/512/1256/1256650.png',
+		title: 'Año',
+		desc: 'Selecciona el año de tu vehículo o proporciona tu VIN.'
+	},
+	{
+		icon: 'https://cdn-icons-png.flaticon.com/512/744/744465.png',
+		title: 'Marca',
+		desc: 'Elige la marca de tu auto.'
+	},
+	{
+		icon: 'https://cdn-icons-png.flaticon.com/512/747/747376.png',
+		title: 'Modelo',
+		desc: 'Selecciona el modelo que corresponde.'
+	},
+	{
+		icon: 'https://cdn-icons-png.flaticon.com/512/1256/1256650.png',
+		title: 'Detalles',
+		desc: 'Proporciona transmisión y detalles adicionales.'
+	},
+	{
+		icon: 'https://cdn-icons-png.flaticon.com/512/747/747376.png',
+		title: 'Contacto',
+		desc: 'Ingresa tus datos para recibir la cotización.'
+	},
+	{
+		icon: 'https://cdn-icons-png.flaticon.com/512/1256/1256650.png',
+		title: 'Resumen',
+		desc: 'Revisa tu información antes de enviar.'
+	}
 ];
 
-export default function QuoteStepperFull({ onSubmit }) {
-  const { t } = useTranslation();
-  const [activeStep, setActiveStep] = useState(0);
-  const [search, setSearch] = useState('');
-  const [selectedYear, setSelectedYear] = useState('');
-  const [vin, setVin] = useState('');
-  const [marca, setMarca] = useState('');
-  const [modelo, setModelo] = useState('');
-  const [ano, setAno] = useState('');
-  const [detalles, setDetalles] = useState({ kilometraje: '', estado: '' });
-  const [contacto, setContacto] = useState({ nombre: '', telefono: '', email: '' });
-  const [vinInfo, setVinInfo] = useState(null);
-  const [vinError, setVinError] = useState(null);
-  const [loadingVin, setLoadingVin] = useState(false);
+const currentYear = new Date().getFullYear();
+const years = Array.from({ length: currentYear - 1980 + 1 }, (_, i) => currentYear - i);
+const transmissions = [
+	{ value: 'automatic', label: 'Automática' },
+	{ value: 'manual', label: 'Manual' },
+	{ value: 'other', label: 'Otra' }
+];
+const initialForm = {
+	vin: '',
+	noVin: false,
+	year: '',
+	brand: '',
+	model: '',
+	transmission: '',
+	name: '',
+	email: '',
+	phone: '',
+	comments: ''
+};
+const stepsKeys = [
+	'quote.stepVehicle',
+	'quote.stepModel',
+	'quote.stepYear',
+	'quote.stepTransmission',
+	'quote.stepContact',
+	'quote.stepSummary'
+];
 
-  const filteredYears = YEARS.filter(y => y.toString().includes(search));
-  const modelosDisponibles = marca ? MODELOS[marca] : [];
+export default function QuoteStepperFull() {
+	const { t } = useTranslation();
+	const theme = useTheme();
+	const [activeStep, setActiveStep] = useState(0);
+	const [form, setForm] = useState(initialForm);
+	const [brands, setBrands] = useState([]);
+	const [models, setModels] = useState([]);
+	const [loadingBrands, setLoadingBrands] = useState(false);
+	const [loadingModels, setLoadingModels] = useState(false);
+	const [errorBrands, setErrorBrands] = useState(false);
+	const [errorModels, setErrorModels] = useState(false);
+	// VIN
+	const [vinLoading, setVinLoading] = useState(false);
+	const [vinInfo, setVinInfo] = useState(null);
+	const [vinError, setVinError] = useState(null);
 
-  // Buscar VIN en tiempo real
-  React.useEffect(() => {
-    let cancel = false;
-    const buscarVin = async () => {
-      if (vin.length === 17) {
-        setLoadingVin(true);
-        setVinError(null);
-        try {
-          const info = await decodeVin(vin);
-          if (!cancel) {
-            setVinInfo(info);
-            setMarca(info.marca || '');
-            setModelo(info.modelo || '');
-            setAno(info.ano || '');
-          }
-        } catch (e) {
-          if (!cancel) {
-            setVinError('No se pudo identificar el auto con ese VIN.');
-            setVinInfo(null);
-            setMarca('');
-            setModelo('');
-            setAno('');
-          }
-        } finally {
-          if (!cancel) setLoadingVin(false);
-        }
-      } else {
-        setVinInfo(null);
-        setVinError(null);
-      }
-    };
-    buscarVin();
-    return () => { cancel = true; };
-  }, [vin]);
+	useEffect(() => {
+		if (!form.year) {
+			setBrands([]);
+			return;
+		}
+		setLoadingBrands(true);
+		getMakesForYear(form.year)
+			.then(data => {
+				setBrands(data);
+				setLoadingBrands(false);
+				setErrorBrands(false);
+			})
+			.catch(() => {
+				setBrands([]);
+				setLoadingBrands(false);
+				setErrorBrands(true);
+			});
+	}, [form.year]);
 
-  const handleNext = () => {
-    setActiveStep(s => s + 1);
-  };
-  const handleBack = () => setActiveStep(s => s - 1);
+	useEffect(() => {
+		if (!form.brand || !form.year) {
+			setModels([]);
+			return;
+		}
+		setLoadingModels(true);
+		getModelsForMakeYear(form.brand, form.year)
+			.then(data => {
+				setModels(data);
+				setLoadingModels(false);
+				setErrorModels(false);
+			})
+			.catch(() => {
+				setModels([]);
+				setLoadingModels(false);
+				setErrorModels(true);
+			});
+	}, [form.brand, form.year]);
 
-  const handleSubmit = () => {
-    if (onSubmit) {
-      onSubmit({
-        year: selectedYear || ano,
-        vin,
-        marca,
-        modelo,
-        detalles,
-        contacto
-      });
-    }
-  };
+	// Decodificar VIN
+	useEffect(() => {
+		const fetchVin = async () => {
+			if (form.vin && isVinValid(form.vin)) {
+				setVinLoading(true);
+				setVinError(null);
+				try {
+					const url = `https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVin/${form.vin}?format=json`;
+					const res = await fetch(url);
+					const data = await res.json();
+					const results = data.Results || [];
+					// Solo campos principales
+								const wanted = [
+									'Make',
+									'Model Year',
+									'Model',
+									'Vehicle Type',
+									'Trim',
+									'Gross Vehicle Weight Rating From',
+									'Engine Number of Cylinders',
+									'Engine Model',
+									'Displacement (L)',
+									'Fuel Delivery / Fuel Injection Type'
+								];
+					const filtered = results.filter(item => wanted.includes(item.Variable) && item.Value && item.Value !== 'Not Applicable' && item.Value !== '0')
+						.map(item => ({ variable: item.Variable, value: item.Value }));
+					setVinInfo(filtered);
+				} catch (e) {
+					setVinInfo(null);
+					setVinError('Error al decodificar VIN');
+				} finally {
+					setVinLoading(false);
+				}
+			} else {
+				setVinInfo(null);
+				setVinError(null);
+				setVinLoading(false);
+			}
+		};
+		fetchVin();
+	}, [form.vin]);
 
-  return (
-    <Stack direction={{ xs: 'column', md: 'row' }} spacing={3}>
-      <Box flex={2}>
-        <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: 2 }}>
-          {stepsKeys.map(key => (
-            <Step key={key}><StepLabel>{t(key)}</StepLabel></Step>
-          ))}
-        </Stepper>
-        <Card>
-          <CardContent>
-            {activeStep === 0 && (
-              <>
-                <Typography variant="h6" sx={{ mb: 2 }}>{t('quote.enterVinTitle')}</Typography>
-                {!detalles.noVin && (
-                  <TextField
-                    fullWidth
-                    size="small"
-                    label={t('quote.vinLabel')}
-                    value={vin}
-                    onChange={e => setVin(e.target.value)}
-                    sx={{ mb: 2 }}
-                    inputProps={{ maxLength: 17 }}
-                    required
-                    error={vin.length > 0 && vin.length !== 17}
-                    helperText={vin.length > 0 && vin.length !== 17 ? t('quote.vinHelper') : ''}
-                  />
-                )}
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                  <input
-                    type="checkbox"
-                    id="no-vin"
-                    checked={vin === '' && detalles.noVin === true}
-                    onChange={e => {
-                      setVin('');
-                      setVinInfo(null);
-                      setVinError(null);
-                      setDetalles(d => ({ ...d, noVin: e.target.checked }));
-                    }}
-                    style={{ marginRight: 8 }}
-                  />
-                  <label htmlFor="no-vin" style={{ cursor: 'pointer' }}>
-                    {t('quote.noVin')}
-                  </label>
-                </Box>
-                {vinError && <Typography color="error" sx={{ mt: 1 }}>{vinError}</Typography>}
-                {loadingVin && <Typography color="primary" sx={{ mt: 1 }}>{t('quote.searchingVin')}</Typography>}
-                {vinInfo && (
-                  <Box sx={{ mt: 2, p: 2, bgcolor: '#e3f6f5', borderRadius: 1 }}>
-                    <Typography variant="subtitle2">{t('quote.identified')}</Typography>
-                    <Typography variant="body2">{t('quote.brand')}: <b>{vinInfo.marca}</b></Typography>
-                    <Typography variant="body2">{t('quote.model')}: <b>{vinInfo.modelo}</b></Typography>
-                    <Typography variant="body2">{t('quote.year')}: <b>{vinInfo.ano}</b></Typography>
-                    <Typography variant="body2">Motor: <b>{vinInfo.motor_litraje ? vinInfo.motor_litraje + 'L' : t('quote.notAvailable')}{vinInfo.motor_cilindros ? `, ${vinInfo.motor_cilindros} cilindros` : ''}</b></Typography>
-                    <Typography variant="body2">Transmisión: <b>{vinInfo.transmision_tipo || t('quote.notAvailable')}</b>{vinInfo.transmision_velocidades ? `, ${vinInfo.transmision_velocidades} velocidades` : ''}</Typography>
-                    <Typography variant="body2">Tracción: <b>{vinInfo.traccion || t('quote.notAvailable')}</b></Typography>
-                  </Box>
-                )}
-                {detalles.noVin && (
-                  <>
-                    <Typography variant="subtitle2" sx={{ mt: 2, mb: 1 }}>{t('quote.manualSelect')}</Typography>
-                    <TextField
-                      fullWidth
-                      size="small"
-                      placeholder={t('quote.searchYear')}
-                      value={search}
-                      onChange={e => setSearch(e.target.value)}
-                      sx={{ mb: 2 }}
-                    />
-                    <List sx={{ maxHeight: 200, overflow: 'auto', border: '1px solid #eee', borderRadius: 1 }}>
-                      {filteredYears.map(year => (
-                        <ListItem key={year} disablePadding>
-                          <ListItemButton selected={selectedYear === year} onClick={() => { setSelectedYear(year); setVin(''); setVinInfo(null); setVinError(null); }}>
-                            <ListItemText primary={year} />
-                          </ListItemButton>
-                        </ListItem>
-                      ))}
-                    </List>
-                  </>
-                )}
-                <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
-                  <span />
-                  <Button
-                    variant="contained"
-                    color="success"
-                    disabled={
-                      (!vin || vin.length !== 17) && !detalles.noVin
-                    }
-                    onClick={() => {
-                      if (vin && vin.length === 17) {
-                        // Si hay VIN válido, saltar a Detalles (omitir pasos manuales)
-                        setActiveStep(3);
-                      } else {
-                        handleNext();
-                      }
-                    }}
-                  >
-                    {t('quote.next')}
-                  </Button>
-                </Box>
-              </>
-            )}
-            {activeStep === 1 && (
-              <>
-                <Typography variant="h6" sx={{ mb: 2 }}>{t('quote.selectBrand')}</Typography>
-                <TextField
-                  select
-                  fullWidth
-                  label={t('quote.brand')}
-                  value={marca}
-                  onChange={e => setMarca(e.target.value)}
-                  disabled={!!vinInfo && !!vinInfo.marca}
-                >
-                  {vinInfo && vinInfo.marca ? (
-                    <MenuItem value={vinInfo.marca}>{vinInfo.marca}</MenuItem>
-                  ) : MARCAS.map(m => <MenuItem key={m} value={m}>{m}</MenuItem>)}
-                </TextField>
-                <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
-                  <Button onClick={handleBack}>{t('quote.back')}</Button>
-                  <Button variant="contained" color="success" disabled={!marca} onClick={handleNext}>{t('quote.next')}</Button>
-                </Box>
-              </>
-            )}
-            {activeStep === 2 && (
-              <>
-                <Typography variant="h6" sx={{ mb: 2 }}>{t('quote.selectModel')}</Typography>
-                <TextField
-                  select
-                  fullWidth
-                  label={t('quote.model')}
-                  value={modelo}
-                  onChange={e => setModelo(e.target.value)}
-                  disabled={!marca || (!!vinInfo && !!vinInfo.modelo)}
-                >
-                  {vinInfo && vinInfo.modelo ? (
-                    <MenuItem value={vinInfo.modelo}>{vinInfo.modelo}</MenuItem>
-                  ) : modelosDisponibles.map(m => <MenuItem key={m} value={m}>{m}</MenuItem>)}
-                </TextField>
-                <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
-                  <Button onClick={handleBack}>{t('quote.back')}</Button>
-                  <Button variant="contained" color="success" disabled={!modelo} onClick={handleNext}>{t('quote.next')}</Button>
-                </Box>
-              </>
-            )}
-            {activeStep === 3 && (
-              <>
-                <Typography variant="h6" sx={{ mb: 2 }}>{t('quote.details')}</Typography>
-                <TextField
-                  fullWidth
-                  label={t('quote.mileage')}
-                  value={detalles.kilometraje}
-                  inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', maxLength: 6 }}
-                  onChange={e => {
-                    const val = e.target.value.replace(/\D/g, '').slice(0, 6);
-                    setDetalles(d => ({ ...d, kilometraje: val }));
-                  }}
-                  sx={{ mb: 2 }}
-                />
-                <TextField
-                  fullWidth
-                  label={t('quote.state') + ' (ej: ' + t('quote.good') + ', ' + t('quote.regular') + ', ' + t('quote.excellent') + ')'}
-                  value={detalles.estado}
-                  onChange={e => setDetalles(d => ({ ...d, estado: e.target.value }))}
-                />
-                <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
-                  <Button onClick={handleBack}>{t('quote.back')}</Button>
-                  <Button variant="contained" color="success" disabled={!detalles.kilometraje || !detalles.estado} onClick={handleNext}>{t('quote.next')}</Button>
-                </Box>
-              </>
-            )}
-            {activeStep === 4 && (
-              <>
-                <Typography variant="h6" sx={{ mb: 2 }}>{t('quote.contact')}</Typography>
-                <TextField
-                  fullWidth
-                  label={t('contact.name')}
-                  value={contacto.nombre}
-                  onChange={e => setContacto(c => ({ ...c, nombre: e.target.value }))}
-                  sx={{ mb: 2 }}
-                />
-                <TextField
-                  fullWidth
-                  label={t('contact.phone')}
-                  value={contacto.telefono}
-                  onChange={e => setContacto(c => ({ ...c, telefono: e.target.value }))}
-                  sx={{ mb: 2 }}
-                />
-                <TextField
-                  fullWidth
-                  label={t('contact.email')}
-                  value={contacto.email}
-                  onChange={e => setContacto(c => ({ ...c, email: e.target.value }))}
-                  sx={{ mb: 2 }}
-                />
-                <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
-                  <Button onClick={handleBack}>{t('quote.back')}</Button>
-                  <Button variant="contained" color="success" disabled={!contacto.nombre || !contacto.telefono || !contacto.email} onClick={handleSubmit}>{t('quote.send')}</Button>
-                </Box>
-              </>
-            )}
-            {activeStep === 4 && (
-              <>
-                <Typography variant="h6" sx={{ mb: 2 }}>Datos de Contacto</Typography>
-                <TextField
-                  fullWidth
-                  label="Nombre"
-                  value={contacto.nombre}
-                  onChange={e => setContacto(c => ({ ...c, nombre: e.target.value }))}
-                  sx={{ mb: 2 }}
-                />
-                <TextField
-                  fullWidth
-                  label="Teléfono"
-                  value={contacto.telefono}
-                  onChange={e => setContacto(c => ({ ...c, telefono: e.target.value }))}
-                  sx={{ mb: 2 }}
-                />
-                <TextField
-                  fullWidth
-                  label="Email"
-                  value={contacto.email}
-                  onChange={e => setContacto(c => ({ ...c, email: e.target.value }))}
-                  sx={{ mb: 2 }}
-                />
-                <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
-                  <Button onClick={handleBack}>Atrás</Button>
-                  <Button variant="contained" color="success" disabled={!contacto.nombre || !contacto.telefono || !contacto.email} onClick={handleSubmit}>Enviar</Button>
-                </Box>
-              </>
-            )}
-          </CardContent>
-        </Card>
-      </Box>
-      <Box flex={1}>
-        <Card>
-          <Tabs value={activeStep} onChange={(_, v) => setActiveStep(v)}>
-            <Tab label={t('quote.steps.yearVin')} />
-            <Tab label={t('quote.steps.brand')} />
-            <Tab label={t('quote.steps.model')} />
-            <Tab label={t('quote.steps.details')} />
-            <Tab label={t('quote.steps.contact')} />
-          </Tabs>
-          <CardContent>
-            <HelpPanel step={activeStep} />
-          </CardContent>
-        </Card>
-      </Box>
-    </Stack>
-  );
+	const handleChange = e => {
+		const { name, value, type, checked } = e.target;
+		setForm(prev => ({
+			...prev,
+			[name]: type === 'checkbox' ? checked : value
+		}));
+	};
+
+	const handleNext = () => setActiveStep(prev => prev + 1);
+	const handleBack = () => setActiveStep(prev => prev - 1);
+	const handleSubmit = e => {
+		e.preventDefault();
+		alert('¡Cotización enviada!');
+		setActiveStep(0);
+		setForm(initialForm);
+	};
+
+	const isVinValid = vin => /^[A-HJ-NPR-Z0-9]{17}$/i.test(vin);
+	const isStepValid = () => {
+		switch (activeStep) {
+			case 0:
+				if (form.noVin) return !!form.year;
+				return isVinValid(form.vin);
+			case 1:
+				return !!form.year && !!form.brand;
+			case 2:
+				return !!form.model;
+			case 3:
+				return !!form.transmission && (form.transmission !== 'other' || form.vin.length === 17);
+			case 4:
+				return form.name.length > 1 && /.+@.+\..+/.test(form.email) && form.phone.length > 5;
+			default:
+				return true;
+		}
+	};
+
+	const renderStep = () => {
+		switch (activeStep) {
+			case 0:
+				return (
+					<Box>
+						<Typography mb={2}>Introduce el VIN o selecciona el año</Typography>
+						<TextField
+							fullWidth
+							name="vin"
+							label={'VIN (17 caracteres)'}
+							value={form.vin}
+							onChange={handleChange}
+							sx={{ mb: 2 }}
+							inputProps={{ maxLength: 17 }}
+							disabled={form.noVin}
+							error={form.vin.length > 0 && !isVinValid(form.vin)}
+							helperText={form.vin.length > 0 && !isVinValid(form.vin) ? 'El VIN debe tener 17 caracteres válidos' : ''}
+						/>
+						<Box display="flex" alignItems="center" mb={2}>
+							<input
+								type="checkbox"
+								id="noVin"
+								name="noVin"
+								checked={form.noVin}
+								onChange={handleChange}
+								style={{ marginRight: 8 }}
+							/>
+							<label htmlFor="noVin">No tengo el VIN ahora</label>
+						</Box>
+						{form.noVin && (
+							<TextField
+								select
+								fullWidth
+								name="year"
+								label={'Año'}
+								value={form.year}
+								onChange={handleChange}
+								sx={{ mb: 2 }}
+							>
+								{years.map(y => (
+									<MenuItem key={y} value={y}>{y}</MenuItem>
+								))}
+							</TextField>
+						)}
+					</Box>
+				);
+			case 1:
+				return (
+					<Box>
+						<Typography mb={2}>Selecciona la marca</Typography>
+						{loadingBrands ? (
+							<CircularProgress size={24} />
+						) : errorBrands ? (
+							<Typography color="error">Error al cargar marcas</Typography>
+						) : (
+							<TextField
+								select
+								fullWidth
+								name="brand"
+								label={'Marca'}
+								value={form.brand}
+								onChange={handleChange}
+								sx={{ mb: 2 }}
+								disabled={!form.year}
+							>
+								{brands.map(b => (
+									<MenuItem key={b} value={b}>{b}</MenuItem>
+								))}
+							</TextField>
+						)}
+					</Box>
+				);
+			case 2:
+				return (
+					<Box>
+						<Typography mb={2}>Selecciona el modelo</Typography>
+						{loadingModels ? (
+							<CircularProgress size={24} />
+						) : errorModels ? (
+							<Typography color="error">Error al cargar modelos</Typography>
+						) : (
+							<TextField
+								select
+								fullWidth
+								name="model"
+								label={'Modelo'}
+								value={form.model}
+								onChange={handleChange}
+								sx={{ mb: 2 }}
+								disabled={!form.brand || !form.year}
+							>
+								{models.map(m => (
+									<MenuItem key={m} value={m}>{m}</MenuItem>
+								))}
+							</TextField>
+						)}
+					</Box>
+				);
+			case 3:
+				return (
+					<Box>
+						<Typography mb={2}>Selecciona la transmisión</Typography>
+						<TextField
+							select
+							fullWidth
+							name="transmission"
+							label={'Transmisión'}
+							value={form.transmission}
+							onChange={handleChange}
+							sx={{ mb: 2 }}
+						>
+							{transmissions.map(opt => (
+								<MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
+							))}
+						</TextField>
+						{form.transmission === 'other' && (
+							<TextField
+								fullWidth
+								name="vin"
+								label={'VIN'}
+								value={form.vin}
+								onChange={handleChange}
+								sx={{ mb: 2 }}
+								inputProps={{ maxLength: 17 }}
+								error={form.vin.length > 0 && form.vin.length !== 17}
+								helperText={form.vin.length > 0 && form.vin.length !== 17 ? 'El VIN debe tener 17 caracteres' : ''}
+							/>
+						)}
+					</Box>
+				);
+			case 4:
+				return (
+					<Box>
+						<Typography mb={2}>Datos de contacto</Typography>
+						<TextField
+							fullWidth
+							name="name"
+							label={'Nombre'}
+							value={form.name}
+							onChange={handleChange}
+							sx={{ mb: 2 }}
+						/>
+						<TextField
+							fullWidth
+							name="email"
+							label={'Correo electrónico'}
+							value={form.email}
+							onChange={handleChange}
+							sx={{ mb: 2 }}
+							type="email"
+							error={form.email.length > 0 && !/.+@.+\..+/.test(form.email)}
+							helperText={form.email.length > 0 && !/.+@.+\..+/.test(form.email) ? 'Correo inválido' : ''}
+						/>
+						<TextField
+							fullWidth
+							name="phone"
+							label={'Teléfono'}
+							value={form.phone}
+							onChange={handleChange}
+							sx={{ mb: 2 }}
+							type="tel"
+						/>
+						<TextField
+							fullWidth
+							name="comments"
+							label={'Comentarios'}
+							value={form.comments}
+							onChange={handleChange}
+							sx={{ mb: 2 }}
+							multiline
+							minRows={2}
+						/>
+					</Box>
+				);
+			case 5:
+				return (
+					<Box>
+						<Typography mb={2}>Resumen</Typography>
+						<Card variant="outlined" sx={{ mb: 2 }}>
+							<CardContent>
+								<Typography variant="subtitle2">Marca: {form.brand}</Typography>
+								<Typography variant="subtitle2">Modelo: {form.model}</Typography>
+								<Typography variant="subtitle2">Año: {form.year}</Typography>
+								<Typography variant="subtitle2">Transmisión: {transmissions.find(opt => opt.value === form.transmission)?.label || ''}</Typography>
+								{form.transmission === 'other' && (
+									<Typography variant="subtitle2">VIN: {form.vin}</Typography>
+								)}
+								<Typography variant="subtitle2">Nombre: {form.name}</Typography>
+								<Typography variant="subtitle2">Correo: {form.email}</Typography>
+								<Typography variant="subtitle2">Teléfono: {form.phone}</Typography>
+								{form.comments && (
+									<Typography variant="subtitle2">Comentarios: {form.comments}</Typography>
+								)}
+							</CardContent>
+						</Card>
+						<Typography color="text.secondary" sx={{ mb: 2 }}>Verifica que los datos sean correctos antes de enviar.</Typography>
+					</Box>
+				);
+			default:
+				return null;
+		}
+	};
+
+	return (
+		<Box sx={{ width: '100%', maxWidth: 1200, mx: 'auto' }}>
+			<Stepper activeStep={activeStep} alternativeLabel sx={{ mb: 4 }}>
+				{stepsKeys.map(key => (
+					<Step key={key}>
+						<StepLabel>{t(key)}</StepLabel>
+					</Step>
+				))}
+			</Stepper>
+			<Stack direction={{ xs: 'column', md: 'row' }} spacing={3} alignItems="stretch">
+				{/* Formulario principal */}
+				<Box flex={{ xs: '1 1 100%', md: '1 1 50%' }} minWidth={0} sx={{ minWidth: { md: 350 }, maxWidth: { md: 420 } }}>
+					<Card elevation={2} sx={{ p: { xs: 2, md: 3 }, height: '100%' }}>
+						<CardContent>
+							<form onSubmit={handleSubmit} autoComplete="off">
+								{renderStep()}
+								<Box mt={2} display="flex" justifyContent="space-between">
+									<Button
+										disabled={activeStep === 0}
+										onClick={handleBack}
+										variant="outlined"
+									>
+										Atrás
+									</Button>
+									{activeStep < stepsKeys.length - 1 ? (
+										<Button
+											onClick={handleNext}
+											variant="contained"
+											disabled={!isStepValid()}
+										>
+											Siguiente
+										</Button>
+									) : (
+										<Button
+											type="submit"
+											variant="contained"
+											disabled={!isStepValid()}
+										>
+											Enviar
+										</Button>
+									)}
+								</Box>
+							</form>
+						</CardContent>
+					</Card>
+				</Box>
+				{/* Panel de ayuda visual */}
+							<Box flex={{ xs: '1 1 100%', md: '1 1 60%' }} minWidth={0} sx={{ minWidth: { md: 500 }, maxWidth: { md: 700 } }}>
+								<Paper elevation={0} sx={{
+									p: { xs: 2, md: 4 },
+									bgcolor: theme.palette.grey[100],
+									height: '100%',
+									display: 'flex',
+									flexDirection: 'column',
+									alignItems: 'center',
+									justifyContent: 'flex-start',
+									minHeight: 500
+								}}>
+									{activeStep === 0 && form.vin && isVinValid(form.vin) ? (
+										vinLoading ? (
+											<Typography color="text.secondary">Buscando VIN...</Typography>
+										) : vinError ? (
+											<Typography color="error">{vinError}</Typography>
+										) : vinInfo && vinInfo.length > 0 ? (
+											<Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+												{/* Imagen según tipo de vehículo */}
+																	{(() => {
+																		const type = vinInfo.find(item => item.variable === 'Vehicle Type')?.value?.toLowerCase() || '';
+																		let img = 'https://cdn-icons-png.flaticon.com/512/744/744465.png'; // sedán por defecto
+																		if (type.includes('suv')) img = 'https://cdn-icons-png.flaticon.com/512/1995/1995476.png';
+																		else if (type.includes('pickup') || type.includes('truck')) img = 'https://cdn-icons-png.flaticon.com/512/1995/1995478.png';
+																		else if (type.includes('van') || type.includes('minivan')) img = 'https://cdn-icons-png.flaticon.com/512/1995/1995477.png';
+																		else if (type.includes('coupe')) img = 'https://cdn-icons-png.flaticon.com/512/744/744465.png';
+																		else if (type.includes('convertible')) img = 'https://cdn-icons-png.flaticon.com/512/1995/1995480.png';
+																		else if (type.includes('hatchback')) img = 'https://cdn-icons-png.flaticon.com/512/1995/1995479.png';
+																		else if (type.includes('wagon')) img = 'https://cdn-icons-png.flaticon.com/512/1995/1995481.png';
+																		else if (type.includes('mpv') || type.includes('multi-purpose')) img = 'https://cdn-icons-png.flaticon.com/512/1995/1995476.png';
+																		return <img src={img} alt="vehículo" style={{ width: 72, height: 72, marginBottom: 12 }} />;
+																	})()}
+												<Typography variant="h5" sx={{ mb: 2, fontWeight: 700 }}>Datos del Vehículo</Typography>
+												<ul style={{ margin: 0, paddingLeft: 16, fontSize: 16 }}>
+													{vinInfo.map((item, idx) => (
+														<li key={idx}><b>{item.variable}:</b> {item.value}</li>
+													))}
+												</ul>
+											</Box>
+										) : null
+									) : (
+										<Typography color="text.secondary" align="center">
+											{stepHelp[activeStep]?.desc}
+										</Typography>
+									)}
+								</Paper>
+							</Box>
+			</Stack>
+		</Box>
+	);
 }
