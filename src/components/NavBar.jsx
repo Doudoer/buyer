@@ -7,7 +7,7 @@ export default function NavBar() {
     <AppBar position="static" color="primary">
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          CashForCars
+          Rodriguez te lo compra!
         </Typography>
         <Stack direction="row" spacing={2}>
           <Button color="inherit" component={Link} to="/">Inicio</Button>

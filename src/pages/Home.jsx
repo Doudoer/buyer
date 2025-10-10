@@ -6,7 +6,7 @@ import { setTitle, setMetaDescription } from '../components/Seo';
 
 export default function Home() {
   useEffect(() => {
-    setTitle('CashForCars - Vende tu auto fácil y rápido');
+  setTitle('Rodriguez te lo compra! - Vende tu auto fácil y rápido');
     setMetaDescription('Obtén una cotización instantánea y vende tu auto hoy mismo. Sin complicaciones, sin regateos.');
   }, []);
   return (

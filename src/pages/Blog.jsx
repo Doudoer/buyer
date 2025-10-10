@@ -17,11 +17,11 @@ const posts = [
     contenido: 'Para vender tu auto necesitas: título de propiedad, identificación oficial, comprobante de domicilio y, si aplica, factura original. ¡Consulta con nosotros si tienes dudas!'
   },
   {
-    titulo: 'Ventajas de vender a CashForCars',
+  titulo: 'Ventajas de vender a Rodriguez te lo compra!',
     resumen: 'Por qué elegirnos para vender tu auto.',
     url: '#',
     imagen: 'https://images.unsplash.com/photo-1461632830798-3adb3034e4c8?auto=format&fit=crop&w=400&q=80',
-    contenido: 'Con CashForCars obtienes pago inmediato, proceso seguro y sin regateos. Nos encargamos de todo el papeleo y recogemos tu auto donde estés.'
+  contenido: 'Con Rodriguez te lo compra! obtienes pago inmediato, proceso seguro y sin regateos. Nos encargamos de todo el papeleo y recogemos tu auto donde estés.'
   },
 ];
 
