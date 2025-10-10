@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Typography, Button, Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-const backgroundImageURL = '/src/assets/licensed-image.jpg';
+const backgroundImageURL = '/logos/licensed-image.jpg';
 
 const Banner = () => {
   const { t } = useTranslation();

@@ -30,7 +30,7 @@ export default function NavBar() {
   <AppBar position="static" color="primary" elevation={4} sx={{ minHeight: 120, boxShadow: '0 4px 24px 0 rgba(0,0,0,0.10)', background: 'linear-gradient(90deg, #e3f2fd 60%, #bbdefb 100%)' }}>
       <Toolbar sx={{ minHeight: 120, height: 120, px: { xs: 2, md: 6 }, py: 1, display: 'flex', alignItems: 'center' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-          <img src="/src/assets/logo.png" alt="Logo" style={{ height: 108, width: 'auto', marginRight: 0, transition: 'height 0.3s' }} />
+          <img src="/logos/logo.png" alt="Logo" style={{ height: 108, width: 'auto', marginRight: 0, transition: 'height 0.3s' }} />
         </Box>
         {/* Desktop navigation */}
         <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
