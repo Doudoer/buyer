@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { decodeVin } from '../utils/vinDecoder';
-import { Box, Card, CardContent, Typography, Button, TextField, List, ListItem, ListItemButton, ListItemText, Tabs, Tab, Stack, Stepper, Step, StepLabel, MenuItem, CircularProgress } from '@mui/material';
-import { getMakesForYear, getModelsForMakeYear } from '../utils/nhtsaApi';
+import {
+  Box, Card, CardContent, Typography, Button, TextField, List, ListItem, ListItemButton, ListItemText, Tabs, Tab, Stack, Stepper, Step, StepLabel, MenuItem
+} from '@mui/material';
 
 const YEARS = Array.from({ length: 20 }, (_, i) => new Date().getFullYear() + 2 - i);
-// Marcas dinámicas por año
+const MARCAS = ['Toyota', 'Honda', 'Ford', 'Chevrolet', 'Nissan', 'Volkswagen', 'Hyundai', 'Kia', 'Mazda', 'BMW'];
 const MODELOS = {
   Toyota: ['Corolla', 'Camry', 'Hilux', 'Yaris'],
   Honda: ['Civic', 'Accord', 'CR-V'],
@@ -74,50 +75,7 @@ export default function QuoteStepperFull({ onSubmit }) {
   const [loadingVin, setLoadingVin] = useState(false);
 
   const filteredYears = YEARS.filter(y => y.toString().includes(search));
-  const [marcasDisponibles, setMarcasDisponibles] = useState([]);
-  const [loadingMarcas, setLoadingMarcas] = useState(false);
-  const [modelosDisponibles, setModelosDisponibles] = useState([]);
-  const [loadingModelos, setLoadingModelos] = useState(false);
-
-  // Obtener marcas por año
-  useEffect(() => {
-    async function fetchMarcas() {
-      if (selectedYear || ano) {
-        setLoadingMarcas(true);
-        try {
-          const marcas = await getMakesForYear(selectedYear || ano);
-          setMarcasDisponibles(marcas);
-        } catch {
-          setMarcasDisponibles([]);
-        } finally {
-          setLoadingMarcas(false);
-        }
-      } else {
-        setMarcasDisponibles([]);
-      }
-    }
-    fetchMarcas();
-  }, [selectedYear, ano]);
-
-  // Obtener modelos por marca y año
-  useEffect(() => {
-    async function fetchModelos() {
-      if (marca && (selectedYear || ano)) {
-        setLoadingModelos(true);
-        try {
-          const modelos = await getModelsForMakeYear(marca, selectedYear || ano);
-          setModelosDisponibles(modelos);
-        } catch {
-          setModelosDisponibles([]);
-        } finally {
-          setLoadingModelos(false);
-        }
-      } else {
-        setModelosDisponibles([]);
-      }
-    }
-    fetchModelos();
-  }, [marca, selectedYear, ano]);
+  const modelosDisponibles = marca ? MODELOS[marca] : [];
 
   // Buscar VIN en tiempo real
   React.useEffect(() => {
@@ -184,42 +142,38 @@ export default function QuoteStepperFull({ onSubmit }) {
           <CardContent>
             {activeStep === 0 && (
               <>
-                <Typography variant="h6" sx={{ mb: 2 }}>Seleccione el Año o ingrese VIN</Typography>
-                <TextField
-                  fullWidth
-                  size="small"
-                  placeholder="Buscar año..."
-                  value={search}
-                  onChange={e => setSearch(e.target.value)}
-                  sx={{ mb: 2 }}
-                  disabled={vin.length === 17}
-                />
-                <Button
-                  variant="text"
-                  color="success"
-                  sx={{ mb: 1 }}
-                  onClick={() => setVin('')}
-                >
-                  Buscar por Número VIN
-                </Button>
-                <List sx={{ maxHeight: 200, overflow: 'auto', border: '1px solid #eee', borderRadius: 1 }}>
-                  {filteredYears.map(year => (
-                    <ListItem key={year} disablePadding>
-                      <ListItemButton selected={selectedYear === year} onClick={() => { setSelectedYear(year); setVin(''); setVinInfo(null); setVinError(null); }}>
-                        <ListItemText primary={year} />
-                      </ListItemButton>
-                    </ListItem>
-                  ))}
-                </List>
-                <TextField
-                  fullWidth
-                  size="small"
-                  label="VIN (opcional, 17 caracteres)"
-                  value={vin}
-                  onChange={e => { setVin(e.target.value); setSelectedYear(''); setVinInfo(null); setVinError(null); }}
-                  sx={{ mt: 2 }}
-                  inputProps={{ maxLength: 17 }}
-                />
+                <Typography variant="h6" sx={{ mb: 2 }}>Ingresa el VIN de tu auto</Typography>
+                {!detalles.noVin && (
+                  <TextField
+                    fullWidth
+                    size="small"
+                    label="VIN (17 caracteres)"
+                    value={vin}
+                    onChange={e => setVin(e.target.value)}
+                    sx={{ mb: 2 }}
+                    inputProps={{ maxLength: 17 }}
+                    required
+                    error={vin.length > 0 && vin.length !== 17}
+                    helperText={vin.length > 0 && vin.length !== 17 ? 'El VIN debe tener 17 caracteres' : ''}
+                  />
+                )}
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  <input
+                    type="checkbox"
+                    id="no-vin"
+                    checked={vin === '' && detalles.noVin === true}
+                    onChange={e => {
+                      setVin('');
+                      setVinInfo(null);
+                      setVinError(null);
+                      setDetalles(d => ({ ...d, noVin: e.target.checked }));
+                    }}
+                    style={{ marginRight: 8 }}
+                  />
+                  <label htmlFor="no-vin" style={{ cursor: 'pointer' }}>
+                    No dispongo del VIN en este momento
+                  </label>
+                </Box>
                 {vinError && <Typography color="error" sx={{ mt: 1 }}>{vinError}</Typography>}
                 {loadingVin && <Typography color="primary" sx={{ mt: 1 }}>Buscando información del VIN...</Typography>}
                 {vinInfo && (
@@ -233,13 +187,44 @@ export default function QuoteStepperFull({ onSubmit }) {
                     <Typography variant="body2">Tracción: <b>{vinInfo.traccion || 'No disponible'}</b></Typography>
                   </Box>
                 )}
+                {detalles.noVin && (
+                  <>
+                    <Typography variant="subtitle2" sx={{ mt: 2, mb: 1 }}>O selecciona manualmente:</Typography>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      placeholder="Buscar año..."
+                      value={search}
+                      onChange={e => setSearch(e.target.value)}
+                      sx={{ mb: 2 }}
+                    />
+                    <List sx={{ maxHeight: 200, overflow: 'auto', border: '1px solid #eee', borderRadius: 1 }}>
+                      {filteredYears.map(year => (
+                        <ListItem key={year} disablePadding>
+                          <ListItemButton selected={selectedYear === year} onClick={() => { setSelectedYear(year); setVin(''); setVinInfo(null); setVinError(null); }}>
+                            <ListItemText primary={year} />
+                          </ListItemButton>
+                        </ListItem>
+                      ))}
+                    </List>
+                  </>
+                )}
                 <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
                   <span />
                   <Button
                     variant="contained"
                     color="success"
-                    disabled={!(selectedYear || vin.length === 17)}
-                    onClick={handleNext}
+                    disabled={
+                      (!vin || vin.length !== 17) && !detalles.noVin
+                    }
+                    onClick={() => {
+                      if (vin && vin.length === 17) {
+                        // Si hay VIN válido, saltar a Detalles (omitir pasos manuales)
+                        setActiveStep(3);
+                      } else {
+                        handleNext();
+                      }
+                    }}
                   >
                     Siguiente
                   </Button>
@@ -255,17 +240,11 @@ export default function QuoteStepperFull({ onSubmit }) {
                   label="Marca"
                   value={marca}
                   onChange={e => setMarca(e.target.value)}
-                  disabled={!!vinInfo && !!vinInfo.marca || loadingMarcas}
+                  disabled={!!vinInfo && !!vinInfo.marca}
                 >
                   {vinInfo && vinInfo.marca ? (
                     <MenuItem value={vinInfo.marca}>{vinInfo.marca}</MenuItem>
-                  ) : loadingMarcas ? (
-                    <MenuItem disabled value="">
-                      <CircularProgress size={20} sx={{ mr: 1 }} /> Cargando marcas...
-                    </MenuItem>
-                  ) : (
-                    marcasDisponibles.map(m => <MenuItem key={m} value={m}>{m}</MenuItem>)
-                  )}
+                  ) : MARCAS.map(m => <MenuItem key={m} value={m}>{m}</MenuItem>)}
                 </TextField>
                 <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
                   <Button onClick={handleBack}>Atrás</Button>
@@ -301,7 +280,11 @@ export default function QuoteStepperFull({ onSubmit }) {
                   fullWidth
                   label="Kilometraje"
                   value={detalles.kilometraje}
-                  onChange={e => setDetalles(d => ({ ...d, kilometraje: e.target.value }))}
+                  inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', maxLength: 6 }}
+                  onChange={e => {
+                    const val = e.target.value.replace(/\D/g, '').slice(0, 6);
+                    setDetalles(d => ({ ...d, kilometraje: val }));
+                  }}
                   sx={{ mb: 2 }}
                 />
                 <TextField
@@ -346,13 +329,43 @@ export default function QuoteStepperFull({ onSubmit }) {
                 </Box>
               </>
             )}
+            {activeStep === 4 && (
+              <>
+                <Typography variant="h6" sx={{ mb: 2 }}>Datos de Contacto</Typography>
+                <TextField
+                  fullWidth
+                  label="Nombre"
+                  value={contacto.nombre}
+                  onChange={e => setContacto(c => ({ ...c, nombre: e.target.value }))}
+                  sx={{ mb: 2 }}
+                />
+                <TextField
+                  fullWidth
+                  label="Teléfono"
+                  value={contacto.telefono}
+                  onChange={e => setContacto(c => ({ ...c, telefono: e.target.value }))}
+                  sx={{ mb: 2 }}
+                />
+                <TextField
+                  fullWidth
+                  label="Email"
+                  value={contacto.email}
+                  onChange={e => setContacto(c => ({ ...c, email: e.target.value }))}
+                  sx={{ mb: 2 }}
+                />
+                <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
+                  <Button onClick={handleBack}>Atrás</Button>
+                  <Button variant="contained" color="success" disabled={!contacto.nombre || !contacto.telefono || !contacto.email} onClick={handleSubmit}>Enviar</Button>
+                </Box>
+              </>
+            )}
           </CardContent>
         </Card>
       </Box>
       <Box flex={1}>
         <Card>
           <Tabs value={activeStep} onChange={(_, v) => setActiveStep(v)}>
-            <Tab label="Año" />
+            <Tab label="Año/VIN" />
             <Tab label="Marca" />
             <Tab label="Modelo" />
             <Tab label="Detalles" />
