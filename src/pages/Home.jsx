@@ -32,33 +32,11 @@ export default function Home() {
 
   return (
     <Stack spacing={6} alignItems="center" sx={{ width: '100%' }}>
-      {/* HERO PRINCIPAL */}
-      <Box sx={{ width: '100%', bgcolor: 'background.paper', py: 6, textAlign: 'center' }}>
-        <Typography variant="h3" component="h1" gutterBottom color="primary.main" fontWeight={700}>
-          {t('hero.title')}
-        </Typography>
-        <Typography variant="h5" color="text.secondary" gutterBottom>
-          {t('hero.subtitle')}
-        </Typography>
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center" mt={3}>
-          <Button variant="contained" color="primary" size="large" component={Link} to="/cotizar">
-            {t('hero.cta')}
-          </Button>
-          <Button variant="outlined" color="primary" size="large" component={Link} to="/faq">
-            {t('hero.howItWorks')}
-          </Button>
-        </Stack>
-      </Box>
+      {/* PROCESO EN 3 PASOS COMPONENTE EXACTO */}
+      <VentaProceso />
 
-  {/* PROCESO EN 3 PASOS COMPONENTE EXACTO */}
-  <VentaProceso />
-
-  {/* SECCIÓN POR QUÉ ELEGIRNOS */}
-  <PorQueElegirnos />
-
-      {/* ...sección de beneficios antigua eliminada... */}
-
-      {/* ...sección de testimonios eliminada... */}
+      {/* SECCIÓN POR QUÉ ELEGIRNOS */}
+      <PorQueElegirnos />
     </Stack>
   );
 }

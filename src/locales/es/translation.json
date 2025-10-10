@@ -79,7 +79,9 @@
     "legal": "Aviso Legal"
   },
   "banner": {
-    "title": "¡Vende tu auto hoy mismo!"
+    "title": "¡Vende tu auto hoy mismo!",
+    "subtitle": "Obtén el mejor precio por tu auto, <b>¡fácil y rápido!</b>",
+    "cta": "COTIZA TU AUTO AHORA"
   },
   "faq": {
     "title": "Preguntas Frecuentes",

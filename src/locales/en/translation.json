@@ -79,7 +79,9 @@
     "legal": "Legal Notice"
   },
   "banner": {
-    "title": "Sell your car today!"
+    "title": "Sell your car today!",
+    "subtitle": "Get the best price for your car, <b>fast and easy!</b>",
+    "cta": "QUOTE YOUR CAR NOW"
   },
   "faq": {
     "title": "Frequently Asked Questions",
