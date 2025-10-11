@@ -57,8 +57,8 @@ const Banner = () => {
           fontWeight: 'bold',
         }}
         href="/cotizar"
-      >
-// ...existing code...
+  >
+Get a quote for your car
       </Button>
     </Box>
   );
