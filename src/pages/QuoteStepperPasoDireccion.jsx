@@ -3,7 +3,12 @@ import { Box, Typography, TextField, Stack, CircularProgress, Alert } from '@mui
 import { useTranslation } from 'react-i18next';
 
 async function fetchZipData(zip) {
-  const res = await fetch(`https://api.zippopotam.us/us/${zip}`);
+  // Usar proxy en desarrollo local para evitar CORS, y la API real en producción
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const baseUrl = isLocal
+    ? '/api/zippopotam.us/us/'
+    : 'https://api.zippopotam.us/us/';
+  const res = await fetch(`${baseUrl}${zip}`);
   if (!res.ok) throw new Error('No se encontró el código postal');
   return res.json();
 }
