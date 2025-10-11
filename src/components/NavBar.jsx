@@ -18,9 +18,9 @@ export default function NavBar() {
   }, [i18n, forceRerender]);
 
   const navLinks = [
-    { label: 'Home', to: '/' },
-    { label: 'Cotización', to: '/cotizar' },
-    { label: 'FAQ', to: '/faq' },
+    { label: t('nav.home', 'Home'), to: '/' },
+    { label: t('nav.quote', 'Quote'), to: '/cotizar' },
+    { label: t('nav.faq', 'FAQ'), to: '/faq' },
   ];
 
   return (

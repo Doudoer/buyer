@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, TextField, Stack } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 function validarTelefono(valor) {
   // Formato: (000) 123 4252
@@ -12,6 +13,7 @@ function validarEmail(valor) {
 }
 
 export default function PasoVendedor({ value = {}, onChange, onValid }) {
+  const { t } = useTranslation();
   const [touched, setTouched] = useState({});
 
   useEffect(() => {
@@ -51,43 +53,43 @@ export default function PasoVendedor({ value = {}, onChange, onValid }) {
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
-        Datos del vendedor
+        {t('quote.sellerTitle', 'Datos del vendedor')}
       </Typography>
       <Stack spacing={2}>
         <TextField
-          label="Nombre"
+          label={t('quote.sellerName', 'Nombre')}
           value={value.nombre || ''}
           onChange={handleChange('nombre')}
           onBlur={handleBlur('nombre')}
           required
           error={touched.nombre && !value.nombre?.trim()}
-          helperText={touched.nombre && !value.nombre?.trim() ? 'Campo requerido' : ''}
+          helperText={touched.nombre && !value.nombre?.trim() ? t('quote.requiredField', 'Campo requerido') : ''}
         />
         <TextField
-          label="Apellido"
+          label={t('quote.sellerLastName', 'Apellido')}
           value={value.apellido || ''}
           onChange={handleChange('apellido')}
           onBlur={handleBlur('apellido')}
           required
           error={touched.apellido && !value.apellido?.trim()}
-          helperText={touched.apellido && !value.apellido?.trim() ? 'Campo requerido' : ''}
+          helperText={touched.apellido && !value.apellido?.trim() ? t('quote.requiredField', 'Campo requerido') : ''}
         />
         <TextField
-          label="Teléfono"
+          label={t('quote.sellerPhone', 'Teléfono')}
           value={value.telefono || ''}
           onChange={handleTelefonoChange}
           onBlur={handleBlur('telefono')}
           required
-          placeholder="(000) 123 4252"
+          placeholder={t('quote.phonePlaceholder', '(000) 123 4252')}
           error={touched.telefono && !validarTelefono(value.telefono || '')}
           helperText={
             touched.telefono && !validarTelefono(value.telefono || '')
-              ? 'Formato requerido: (000) 123 4252'
+              ? t('quote.phoneFormat', 'Formato requerido: (000) 123 4252')
               : ''
           }
         />
         <TextField
-          label="Correo electrónico"
+          label={t('quote.sellerEmail', 'Correo electrónico')}
           value={value.email || ''}
           onChange={handleChange('email')}
           onBlur={handleBlur('email')}
@@ -96,7 +98,7 @@ export default function PasoVendedor({ value = {}, onChange, onValid }) {
           error={touched.email && !validarEmail(value.email || '')}
           helperText={
             touched.email && !validarEmail(value.email || '')
-              ? 'Ingresa un correo electrónico válido'
+              ? t('quote.emailFormat', 'Ingresa un correo electrónico válido')
               : ''
           }
         />

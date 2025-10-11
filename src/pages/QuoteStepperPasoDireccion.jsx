@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, TextField, Stack, CircularProgress, Alert } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 async function fetchZipData(zip) {
   const res = await fetch(`http://api.zippopotam.us/us/${zip}`);
@@ -8,6 +9,7 @@ async function fetchZipData(zip) {
 }
 
 export default function PasoDireccion({ value = {}, onChange, onValid }) {
+  const { t } = useTranslation();
   const [zip, setZip] = useState(value.zip || '');
   const [city, setCity] = useState(value.city || '');
   const [state, setState] = useState(value.state || '');
@@ -49,29 +51,29 @@ export default function PasoDireccion({ value = {}, onChange, onValid }) {
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
-        Dirección donde se ubica el vehículo
+        {t('quote.addressTitle', 'Dirección donde se ubica el vehículo')}
       </Typography>
       <Stack spacing={2}>
         <TextField
-          label="Código Postal"
+          label={t('quote.zip', 'Código Postal')}
           value={zip}
           onChange={handleZipChange}
           onBlur={handleBlur('zip')}
           required
-          placeholder="ZIP Code"
+          placeholder={t('quote.zipPlaceholder', 'ZIP Code')}
           error={touched.zip && zip.length !== 5}
-          helperText={touched.zip && zip.length !== 5 ? 'Debe tener 5 dígitos' : ''}
+          helperText={touched.zip && zip.length !== 5 ? t('quote.zipHelper', 'Debe tener 5 dígitos') : ''}
         />
         {loading && <CircularProgress size={24} />}
         {error && <Alert severity="error">{error}</Alert>}
         <TextField
-          label="Ciudad"
+          label={t('quote.city', 'Ciudad')}
           value={city}
           InputProps={{ readOnly: true }}
           required
         />
         <TextField
-          label="Estado"
+          label={t('quote.state', 'Estado')}
           value={state}
           InputProps={{ readOnly: true }}
           required

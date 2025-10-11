@@ -1,4 +1,121 @@
 {
+  "nav": {
+    "home": "Home",
+    "quote": "Get a quote",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "testimonials": "Testimonials",
+    "blog": "Blog",
+    "language": "Language",
+    "spanish": "Spanish",
+    "english": "English"
+  },
+  "home": {
+    "title": "Get a quote for your car",
+    "description": "Get an instant quote and sell your car today. No hassle, no haggling."
+  },
+  "quote": {
+    "vinStepTitle": "Enter the VIN of the vehicle to quote",
+    "noVinManual": "I don't have the VIN, enter data manually",
+    "vinLabel": "VIN (17 characters)",
+    "vinHelper": "The VIN must be 17 characters",
+    "detectedData": "Detected data:",
+    "year": "Year",
+    "brand": "Brand",
+    "model": "Model",
+    "engine": "Engine",
+    "cylinders": "cylinders",
+    "transmission": "Transmission",
+    "traction": "Traction",
+    "selectYear": "Select year",
+    "selectBrand": "Select brand",
+    "selectModel": "Select model",
+    "condicionTitle": "Vehicle conditions",
+    "yes": "Yes",
+    "no": "No",
+    "condicion": {
+      "enciende": "Does the vehicle start?",
+      "neumaticos_aire": "Do the tires have air?",
+      "todos_neumaticos": "Does the vehicle have all tires?",
+      "catalizadores": "Does the vehicle have catalytic converters?",
+      "titulo": "Does the vehicle have a title?",
+      "llave": "Has key?"
+    },
+    "corporalTitle": "Vehicle body condition",
+    "corporal": {
+      "danos_frente": "Front damage?",
+      "danos_trasera": "Rear damage?",
+      "danos_lado_izq": "Left side damage?",
+      "danos_lado_der": "Right side damage?",
+      "danos_motor": "Engine damage?",
+      "inundacion": "Flood damage?",
+      "fuego": "Fire damage?",
+      "bolsas_aire": "Broken airbags?"
+    },
+    "sellerTitle": "Seller data",
+    "sellerName": "First name",
+    "sellerLastName": "Last name",
+    "sellerPhone": "Phone",
+    "sellerEmail": "Email",
+    "requiredField": "Required field",
+    "phonePlaceholder": "(000) 123 4252",
+    "phoneFormat": "Required format: (000) 123 4252",
+    "emailFormat": "Enter a valid email address",
+    "addressTitle": "Address where the vehicle is located",
+    "zip": "ZIP Code",
+    "zipPlaceholder": "ZIP Code",
+    "zipHelper": "Must be 5 digits",
+    "city": "City",
+    "state": "State",
+    "verificationTitle": "Entered data verification",
+    "vehicleData": "Vehicle data",
+    "title": "Get a quote for your car",
+    "vin": "VIN NUMBER",
+    "manual": "Enter manually",
+    "next": "Next",
+    "back": "Back",
+    "send": "Send",
+    "mileage": "Mileage",
+    "details": "Car Details",
+    "contact": "Contact Details",
+    "good": "good",
+    "regular": "regular",
+    "excellent": "excellent",
+    "titleQ": "Does the vehicle have a title?",
+    "select": "Select an option",
+    "optional": "optional",
+    "chars": "characters",
+    "identified": "Car identified",
+    "notIdentified": "Could not identify the car",
+    "searchingVin": "Searching VIN information...",
+    "steps": {
+      "yearVin": "Year/VIN",
+      "brand": "Brand",
+      "model": "Model",
+      "details": "Details",
+      "contact": "Contact",
+      "summary": "Summary and Confirmation"
+    },
+    "enterVinTitle": "Enter your car's VIN",
+    "vinInvalid": "The entered VIN is not valid.",
+    "emailInvalid": "The email is not valid.",
+    "phoneInvalid": "The phone must have at least 8 digits.",
+    "summaryTitle": "Review and confirm your data",
+    "summary": "Please check that all information is correct before submitting:",
+    "edit": "Edit",
+    "noVin": "I don't have the VIN right now",
+    "manualSelect": "Or select manually:",
+    "searchYear": "Search year...",
+    "notAvailable": "Not available",
+    "phone": "Phone",
+    "help": {
+      "year": {"title": "Year", "desc": "Select your vehicle's year or provide your VIN."},
+      "brand": {"title": "Brand", "desc": "Select your car's brand."},
+      "model": {"title": "Model", "desc": "Select your car's model."},
+      "details": {"title": "Details", "desc": "Add details like mileage, condition, etc."},
+      "contact": {"title": "Contact", "desc": "Enter your details to receive the offer."}
+    }
+  },
   "contact": {
     "title": "Contact",
     "name": "Name",
@@ -9,11 +126,12 @@
   },
   "footer": {
     "rights": "All rights reserved.",
-    "privacy": "Privacy Policy"
+    "privacy": "Privacy Policy",
+    "legal": "Legal Notice"
   },
   "banner": {
     "title": "Sell your car today!",
-    "subtitle": "Get the best price for your car, fast and easy!",
+    "subtitle": "Get the best price for your car, <b>fast and easy!</b>",
     "cta": "QUOTE YOUR CAR NOW"
   },
   "faq": {
@@ -25,7 +143,39 @@
     "q3": "What documents do I need?",
     "a3": "Title of ownership, official ID, and proof of address."
   },
-
+  "testimonials": {
+    "title": "Customer Testimonials",
+    "1": {
+      "name": "John Smith",
+      "text": "I sold my car in one day, excellent service! The process was very simple and the payment immediate."
+    },
+    "2": {
+      "name": "Anna Gomez",
+      "text": "Very easy and fast, I recommend it. They helped me with all the paperwork and were very friendly."
+    },
+    "3": {
+      "name": "Charles Ruiz",
+      "text": "I was paid instantly and without complications. I would definitely sell them another car."
+    }
+  },
+  "blog": {
+    "title": "Blog & News",
+    "1": {
+      "title": "How to sell your car fast?",
+      "summary": "Tips to sell your car safely and quickly.",
+      "content": "Selling your car fast is possible if you follow these tips: prepare the documentation, keep your car clean, take good photos and get a quote with us for an immediate offer."
+    },
+    "2": {
+      "title": "Documents needed for the sale",
+      "summary": "List of documents you need to sell your car.",
+      "content": "To sell your car you need: title of ownership, official ID, proof of address and, if applicable, original invoice. Contact us if you have questions!"
+    },
+    "3": {
+      "title": "Advantages of selling to Rodriguez te lo compra!",
+      "summary": "Why choose us to sell your car.",
+      "content": "With Rodriguez te lo compra! you get immediate payment, a safe process and no haggling. We take care of all the paperwork and pick up your car wherever you are."
+    }
+  },
   "notFound": {
     "404": "404 - Page not found",
     "backHome": "Back to home"
@@ -50,9 +200,26 @@
       "desc": "Join our community. Discover why so many choose us for a stress-free sale."
     }
   },
+  "process": {
+    "title": "Sell Your Car in 3 Simple Steps!",
+    "subtitle": "Fast, Easy and 100% Hassle-Free.",
+    "step1": {
+      "title": "Instant Offer!",
+      "desc": "Complete our form in 90 seconds and receive a guaranteed offer."
+    },
+    "step2": {
+      "title": "FREE Pickup",
+      "desc": "Accept the offer and schedule your car pickup wherever you are."
+    },
+    "step3": {
+      "title": "Get Paid Instantly",
+      "desc": "Receive your full payment instantly, right when we pick up your vehicle."
+    }
+  },
   "hero": {
-    "subtitle": "Sell your car in minutes, no unnecessary paperwork.",
+    "title": "Sell your car easily, quickly and safely.",
+    "subtitle": "Get a quote and sell your car in minutes, no unnecessary paperwork.",
     "cta": "Quote my car",
     "howItWorks": "How it works"
   }
-    }
+}

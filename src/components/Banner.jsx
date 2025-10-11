@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Box, Typography, Button, Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -57,8 +56,8 @@ const Banner = () => {
           fontWeight: 'bold',
         }}
         href="/cotizar"
-  >
-Get a quote for your car
+      >
+        {t('banner.cta', 'COTIZA TU AUTO AHORA')}
       </Button>
     </Box>
   );

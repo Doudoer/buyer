@@ -14,19 +14,19 @@ export default function Home() {
     setMetaDescription(t('home.description'));
   }, [i18n.language, t]);
 
-  // Testimonios de ejemplo
+  // Testimonios de ejemplo (ahora usando traducción)
   const testimonios = [
     {
-      nombre: 'Laura, CDMX',
-      texto: 'Vendí mi auto en un día, todo fue muy fácil.'
+      nombre: t('home.testimonials.1.name', 'Laura, CDMX'),
+      texto: t('home.testimonials.1.text', 'Vendí mi auto en un día, todo fue muy fácil.')
     },
     {
-      nombre: 'José, Monterrey',
-      texto: 'Me pagaron al instante y recogieron el auto en mi casa.'
+      nombre: t('home.testimonials.2.name', 'José, Monterrey'),
+      texto: t('home.testimonials.2.text', 'Me pagaron al instante y recogieron el auto en mi casa.')
     },
     {
-      nombre: 'Ana, Guadalajara',
-      texto: 'El proceso fue rápido y sin complicaciones.'
+      nombre: t('home.testimonials.3.name', 'Ana, Guadalajara'),
+      texto: t('home.testimonials.3.text', 'El proceso fue rápido y sin complicaciones.')
     }
   ];
 

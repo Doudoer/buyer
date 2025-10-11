@@ -1,18 +1,20 @@
 import React, { useEffect } from 'react';
 import { Box, Typography, FormGroup, RadioGroup, FormControlLabel, Radio } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 const preguntas = [
-  { key: 'danos_frente', label: '¿Daños al frente?' },
-  { key: 'danos_trasera', label: '¿Daños en la parte trasera?' },
-  { key: 'danos_lado_izq', label: '¿Daños en lateral izquierdo?' },
-  { key: 'danos_lado_der', label: '¿Daños en lateral derecho?' },
-  { key: 'danos_motor', label: '¿Daños en el motor?' },
-  { key: 'inundacion', label: '¿Daños por inundacion?' },
-  { key: 'fuego', label: '¿Daños por fuego?' },
-  { key: 'bolsas_aire', label: '¿Bolsas de aire rotas?' },
+  { key: 'danos_frente', label: 'quote.corporal.danos_frente' },
+  { key: 'danos_trasera', label: 'quote.corporal.danos_trasera' },
+  { key: 'danos_lado_izq', label: 'quote.corporal.danos_lado_izq' },
+  { key: 'danos_lado_der', label: 'quote.corporal.danos_lado_der' },
+  { key: 'danos_motor', label: 'quote.corporal.danos_motor' },
+  { key: 'inundacion', label: 'quote.corporal.inundacion' },
+  { key: 'fuego', label: 'quote.corporal.fuego' },
+  { key: 'bolsas_aire', label: 'quote.corporal.bolsas_aire' },
 ];
 
 export default function PasoCorporal({ value = {}, onChange, onValid }) {
+  const { t } = useTranslation();
   useEffect(() => {
     // Validar que todas las preguntas tengan respuesta (true/false)
     const valid = preguntas.every(q => typeof value[q.key] === 'boolean');
@@ -26,19 +28,19 @@ export default function PasoCorporal({ value = {}, onChange, onValid }) {
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
-        Condición corporal del vehículo
+        {t('quote.corporalTitle', 'Condición corporal del vehículo')}
       </Typography>
       <FormGroup>
         {preguntas.map((q) => (
           <Box key={q.key} sx={{ mb: 2 }}>
-            <Typography>{q.label}</Typography>
+            <Typography>{t(q.label)}</Typography>
             <RadioGroup
               row
               value={typeof value[q.key] === 'boolean' ? String(value[q.key]) : ''}
               onChange={handleRadio(q.key)}
             >
-              <FormControlLabel value="true" control={<Radio color="primary" />} label="Sí" />
-              <FormControlLabel value="false" control={<Radio color="primary" />} label="No" />
+              <FormControlLabel value="true" control={<Radio color="primary" />} label={t('quote.yes', 'Sí')} />
+              <FormControlLabel value="false" control={<Radio color="primary" />} label={t('quote.no', 'No')} />
             </RadioGroup>
           </Box>
         ))}

@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, Divider, Switch, FormControlLabel, MenuItem, CircularProgress, Alert } from '@mui/material';
 import { decodeVin } from '../utils/vinDecoder';
 import { getMakesForYear, getModelsForMakeYear } from '../utils/nhtsaApi';
+import { useTranslation } from 'react-i18next';
 
 export default function PasoVin({ value, onChange, onValid }) {
+  const { t } = useTranslation();
   const [vin, setVin] = useState(value?.vin || '');
   const [vinData, setVinData] = useState(null);
   const [vinError, setVinError] = useState('');
@@ -102,36 +104,36 @@ export default function PasoVin({ value, onChange, onValid }) {
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
-        Ingresa el VIN del vehículo a cotizar
+        {t('quote.vinStepTitle', 'Ingresa el VIN del vehículo a cotizar')}
       </Typography>
       <FormControlLabel
         control={<Switch checked={manual} onChange={handleManualSwitch} />}
-        label="No tengo el VIN, ingresar datos manualmente"
+        label={t('quote.noVinManual', 'No tengo el VIN, ingresar datos manualmente')}
       />
       {!manual && (
         <Box sx={{ mt: 2 }}>
           <TextField
-            label="VIN"
+            label={t('quote.vinLabel', 'VIN')}
             value={vin}
             onChange={handleVinChange}
             inputProps={{ maxLength: 17 }}
             fullWidth
             autoFocus
-            helperText="Debe tener 17 caracteres"
+            helperText={t('quote.vinHelper', 'Debe tener 17 caracteres')}
             error={!!vinError}
           />
           {loading && <CircularProgress size={24} sx={{ mt: 2 }} />}
           {vinError && <Alert severity="error" sx={{ mt: 2 }}>{vinError}</Alert>}
           {vinData && (
             <Box sx={{ mt: 2 }}>
-              <Typography variant="subtitle1">Datos detectados:</Typography>
+              <Typography variant="subtitle1">{t('quote.detectedData', 'Datos detectados:')}</Typography>
               <ul>
-                <li>Año: {vinData.ano}</li>
-                <li>Marca: {vinData.marca}</li>
-                <li>Modelo: {vinData.modelo}</li>
-                <li>Motor: {vinData.motor_litraje}L, {vinData.motor_cilindros} cilindros</li>
-                <li>Transmisión: {vinData.transmision_atmt} ({vinData.transmision_tipo})</li>
-                <li>Tracción: {vinData.traccion}</li>
+                <li>{t('quote.year', 'Año')}: {vinData.ano}</li>
+                <li>{t('quote.brand', 'Marca')}: {vinData.marca}</li>
+                <li>{t('quote.model', 'Modelo')}: {vinData.modelo}</li>
+                <li>{t('quote.engine', 'Motor')}: {vinData.motor_litraje}L, {vinData.motor_cilindros} {t('quote.cylinders', 'cilindros')}</li>
+                <li>{t('quote.transmission', 'Transmisión')}: {vinData.transmision_atmt} ({vinData.transmision_tipo})</li>
+                <li>{t('quote.traction', 'Tracción')}: {vinData.traccion}</li>
               </ul>
             </Box>
           )}
@@ -140,21 +142,21 @@ export default function PasoVin({ value, onChange, onValid }) {
       {manual && (
         <Box sx={{ mt: 2 }}>
           <TextField
-            label="Año"
+            label={t('quote.year', 'Año')}
             value={manualData.year}
             onChange={handleYearChange}
             select
             fullWidth
             sx={{ mb: 2 }}
           >
-            <MenuItem value="">Selecciona año</MenuItem>
+            <MenuItem value="">{t('quote.selectYear', 'Selecciona año')}</MenuItem>
             {Array.from({ length: 30 }, (_, i) => {
               const y = new Date().getFullYear() - i;
               return <MenuItem key={y} value={y}>{y}</MenuItem>;
             })}
           </TextField>
           <TextField
-            label="Marca"
+            label={t('quote.brand', 'Marca')}
             value={manualData.make}
             onChange={handleMakeChange}
             select
@@ -162,20 +164,20 @@ export default function PasoVin({ value, onChange, onValid }) {
             sx={{ mb: 2 }}
             disabled={!manualData.year || makes.length === 0}
           >
-            <MenuItem value="">Selecciona marca</MenuItem>
+            <MenuItem value="">{t('quote.selectBrand', 'Selecciona marca')}</MenuItem>
             {makes.map((m) => (
               <MenuItem key={m} value={m}>{m}</MenuItem>
             ))}
           </TextField>
           <TextField
-            label="Modelo"
+            label={t('quote.model', 'Modelo')}
             value={manualData.model}
             onChange={handleModelChange}
             select
             fullWidth
             disabled={!manualData.make || models.length === 0}
           >
-            <MenuItem value="">Selecciona modelo</MenuItem>
+            <MenuItem value="">{t('quote.selectModel', 'Selecciona modelo')}</MenuItem>
             {models.map((m) => (
               <MenuItem key={m} value={m}>{m}</MenuItem>
             ))}
