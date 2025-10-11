@@ -1,7 +1,3 @@
-
-
-
-
 import React, { useState } from 'react';
 import { Stack, Box, Stepper, Step, StepLabel, Button, Typography, Paper } from '@mui/material';
 import PasoVin from './QuoteStepperPasoVin';
@@ -10,18 +6,20 @@ import PasoCorporal from './QuoteStepperPasoCorporal';
 import PasoVendedor from './QuoteStepperPasoVendedor';
 import PasoDireccion from './QuoteStepperPasoDireccion';
 import PasoVerificacion from './QuoteStepperPasoVerificacion';
+import { useTranslation } from 'react-i18next';
 // import { useState } from 'react'; // Eliminada duplicada
 import { Snackbar, Alert } from '@mui/material';
 import { generarPDF } from '../utils/generarPDF';
 
 export default function QuoteForm() {
+  const { t } = useTranslation();
   const steps = [
-    'Datos del vehículo',
-    'Condiciones del vehículo',
-    'Condición corporal',
-    'Datos del vendedor',
-    'Dirección',
-    'Verificación',
+    t('quote.steps.yearVin', t('quote.vinStepTitle', 'Datos del vehículo')),
+    t('quote.steps.condicion', t('quote.condicionTitle', 'Condiciones del vehículo')),
+    t('quote.steps.corporal', t('quote.corporalTitle', 'Condición corporal')),
+    t('quote.steps.vendedor', t('quote.sellerTitle', 'Datos del vendedor')),
+    t('quote.steps.direccion', t('quote.addressTitle', 'Dirección')),
+    t('quote.steps.verificacion', t('quote.verificationTitle', 'Verificación')),
   ];
 
   const [activeStep, setActiveStep] = useState(0);
