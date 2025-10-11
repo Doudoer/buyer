@@ -55,7 +55,7 @@ const Banner = () => {
           borderRadius: '50px',
           fontWeight: 'bold',
         }}
-        href="/cotizar"
+        href="/quote"
       >
         {t('banner.cta', 'COTIZA TU AUTO AHORA')}
       </Button>

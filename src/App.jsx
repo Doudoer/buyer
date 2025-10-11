@@ -10,9 +10,9 @@ import NotFound from './pages/NotFound';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import Banner from './components/Banner';
-import Privacidad from './pages/Privacidad';
-import AvisoLegal from './pages/AvisoLegal';
-import Testimonios from './pages/Testimonios';
+import Privacy from './pages/Privacy';
+import LegalNotice from './pages/LegalNotice';
+import Testimonials from './pages/Testimonials';
 import Blog from './pages/Blog';
 
 
@@ -23,7 +23,7 @@ function App() {
       <NavBar />
       <Routes>
         <Route
-          path="/cotizar"
+          path="/quote"
           element={
             <Container maxWidth="md" sx={{ py: 4, flex: 1 }}>
               <QuoteForm />
@@ -40,9 +40,9 @@ function App() {
                   <Route path="/" element={<Home />} />
                   <Route path="/contacto" element={<Contact />} />
                   <Route path="/faq" element={<Faq />} />
-                  <Route path="/privacidad" element={<Privacidad />} />
-                  <Route path="/aviso-legal" element={<AvisoLegal />} />
-                  <Route path="/testimonios" element={<Testimonios />} />
+                  <Route path="/privacy" element={<Privacy />} />
+                  <Route path="/legal-notice" element={<LegalNotice />} />
+                  <Route path="/testimonials" element={<Testimonials />} />
                   <Route path="/blog" element={<Blog />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>

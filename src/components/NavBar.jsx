@@ -19,7 +19,7 @@ export default function NavBar() {
 
   const navLinks = [
     { label: t('nav.home', 'Home'), to: '/' },
-    { label: t('nav.quote', 'Quote'), to: '/cotizar' },
+  { label: t('nav.quote', 'Quote'), to: '/quote' },
     { label: t('nav.faq', 'FAQ'), to: '/faq' },
   ];
 
