@@ -3,7 +3,7 @@ import { Box, Typography, TextField, Stack, CircularProgress, Alert } from '@mui
 import { useTranslation } from 'react-i18next';
 
 async function fetchZipData(zip) {
-  const res = await fetch(`http://api.zippopotam.us/us/${zip}`);
+  const res = await fetch(`https://api.zippopotam.us/us/${zip}`);
   if (!res.ok) throw new Error('No se encontró el código postal');
   return res.json();
 }
