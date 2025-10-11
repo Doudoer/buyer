@@ -9,17 +9,15 @@ export default function LanguageSwitcher() {
   };
   return (
     <FormControl size="small" sx={{ minWidth: 120, ml: 2 }}>
-      <InputLabel id="language-select-label">{t('nav.language')}</InputLabel>
-      <Select
-        labelId="language-select-label"
-        id="language-select"
-        value={i18n.language}
-        label={t('nav.language')}
-        onChange={handleChange}
-      >
-        <MenuItem value="es">{t('nav.spanish')}</MenuItem>
-        <MenuItem value="en">{t('nav.english')}</MenuItem>
-      </Select>
+        <Select
+          id="language-select"
+          value={i18n.language}
+          onChange={handleChange}
+          displayEmpty
+        >
+          <MenuItem value="es">Español</MenuItem>
+          <MenuItem value="en">English</MenuItem>
+        </Select>
     </FormControl>
   );
 }

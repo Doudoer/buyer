@@ -1,63 +1,58 @@
 import React, { useState } from 'react';
 import {
-  Box, Card, CardContent, Typography, Button, TextField, List, ListItem, ListItemButton, ListItemText, Tabs, Tab, Stack
+  Stepper, Step, StepLabel, Button, Box, Paper, Typography
 } from '@mui/material';
+// Aquí irán los imports de los pasos individuales
 
-const YEARS = Array.from({ length: 20 }, (_, i) => new Date().getFullYear() + 2 - i);
+const steps = [
+  'VIN / Año',
+  'Marca',
+  'Modelo',
+  'Condición Mecánica',
+  'Daños',
+  'Contacto',
+  'Resumen'
+];
 
-function HelpPanel({ year }) {
+export default function QuoteStepper() {
+  const [activeStep, setActiveStep] = useState(0);
+  const [formData, setFormData] = useState({});
+
+  const handleNext = (data) => {
+    setFormData(prev => ({ ...prev, ...data }));
+    setActiveStep(prev => prev + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep(prev => prev - 1);
+  };
+
+  const handleEditStep = (step) => {
+    setActiveStep(step);
+  };
+
   return (
-    <Box sx={{ bgcolor: '#e3f6f5', p: 3, borderRadius: 2, minHeight: 350 }}>
-      <Stack spacing={2} alignItems="center">
-        <img src="https://cdn-icons-png.flaticon.com/512/2921/2921222.png" alt="Año" width={100} />
-        <Typography variant="h6">Año</Typography>
-        <Typography variant="body2" align="center">
-          Comience seleccionando el año de su vehículo o proporcionando su VIN (Número de identificación del vehículo).<br /><br />
-          Para una oferta más precisa, proporcione su VIN. No es obligatorio, pero ayuda a procesar una oferta de forma más rápida y precisa. En la mayoría de los casos, el VIN tiene 17 caracteres de longitud.<br /><br />
-          <b>¿Dónde puede encontrar el VIN de su vehículo?</b><br />
-          Parabrisas del lado del conductor o puerta del conductor<br />
-          Tarjeta de seguro<br />
-          Título
+    <Paper elevation={2} sx={{ maxWidth: 500, mx: 'auto', p: 3 }}>
+      <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: 3 }}>
+        {steps.map((label, idx) => (
+          <Step key={label} completed={activeStep > idx}>
+            <StepLabel>{label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+      <Box>
+        {/* Aquí se renderizarán los pasos individuales */}
+        <Typography align="center" color="text.secondary" sx={{ mt: 4 }}>
+          Paso {activeStep + 1} de {steps.length} (estructura base, falta implementar cada paso)
         </Typography>
-      </Stack>
-    </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
+          <Button disabled={activeStep === 0} onClick={handleBack} variant="text">Anterior</Button>
+          <Button disabled={activeStep === steps.length - 1} onClick={() => handleNext({})} variant="contained">Siguiente</Button>
+        </Box>
+      </Box>
+    </Paper>
   );
 }
-
-export default function QuoteStepper({ onSubmit }) {
-  const [tab, setTab] = useState(0);
-  const [search, setSearch] = useState('');
-  const [selectedYear, setSelectedYear] = useState(null);
-  const [vin, setVin] = useState('');
-
-  const filteredYears = YEARS.filter(y => y.toString().includes(search));
-
-  return (
-    <Stack direction={{ xs: 'column', md: 'row' }} spacing={3}>
-      <Box flex={2}>
-        <Card>
-          <Tabs value={tab} onChange={(_, v) => setTab(v)} sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tab label="Mi Auto" />
-            <Tab label="¿Necesita Ayuda?" />
-          </Tabs>
-          {tab === 0 && (
-            <CardContent>
-              <Typography variant="h6" sx={{ mb: 2 }}>Seleccione el Año</Typography>
-              <TextField
-                fullWidth
-                size="small"
-                placeholder="Buscar año..."
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                sx={{ mb: 2 }}
-              />
-              <Button
-                variant="text"
-                color="success"
-                sx={{ mb: 1 }}
-                onClick={() => setTab(1)}
-              >
-                Buscar por Número VIN
               </Button>
               <List sx={{ maxHeight: 300, overflow: 'auto', border: '1px solid #eee', borderRadius: 1 }}>
                 {filteredYears.map(year => (
@@ -118,3 +113,4 @@ export default function QuoteStepper({ onSubmit }) {
     </Stack>
   );
 }
+// Componente eliminado: QuoteStepper (formulario de cotización)

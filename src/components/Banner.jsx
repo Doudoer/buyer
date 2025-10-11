@@ -58,7 +58,7 @@ const Banner = () => {
         }}
         href="/cotizar"
       >
-        {t('banner.cta', 'QUOTE YOUR CAR NOW')}
+// ...existing code...
       </Button>
     </Box>
   );

@@ -18,12 +18,9 @@ export default function NavBar() {
   }, [i18n, forceRerender]);
 
   const navLinks = [
-    { label: t('nav.home'), to: '/' },
-    { label: t('nav.quote'), to: '/cotizar' },
-    { label: t('nav.testimonials'), to: '/testimonios' },
-    { label: t('nav.blog'), to: '/blog' },
-    { label: t('nav.contact'), to: '/contacto' },
-    { label: t('nav.faq'), to: '/faq' },
+    { label: 'Home', to: '/' },
+    { label: 'Cotización', to: '/cotizar' },
+    { label: 'FAQ', to: '/faq' },
   ];
 
   return (

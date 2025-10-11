@@ -1,3 +1,4 @@
+// Componente eliminado: QuoteStepperFull (formulario de cotización)
 import React, { useState, useEffect } from 'react';
 import {
 	Box,
